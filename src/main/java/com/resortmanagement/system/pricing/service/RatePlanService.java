@@ -12,6 +12,7 @@ import com.resortmanagement.system.pricing.dto.response.RatePlanResponse;
 import com.resortmanagement.system.pricing.dto.response.RatePlanSummaryResponse;
 import com.resortmanagement.system.pricing.entity.RatePlan;
 import com.resortmanagement.system.pricing.repository.RatePlanRepository;
+import com.resortmanagement.system.room.repository.RoomTypeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class RatePlanService {
 
     private final RatePlanRepository repository;
-
+    private final RoomTypeRepository roomTypeRepository;
+    
     public RatePlanResponse create(RatePlanCreateRequest request) {
 
         RatePlan plan = new RatePlan();
@@ -31,7 +33,10 @@ public class RatePlanService {
         plan.setIsRefundable(request.getRefundable());
         plan.setMinStayNights(request.getMinStayNights());
         plan.setMaxStayNights(request.getMaxStayNights());
-
+        plan.setRoomTypeId(roomTypeRepository.findById(request.getRoomTypeId())
+                .orElseThrow(() -> new RuntimeException("RoomType not found")));
+        plan.setValidFrom(request.getValidFrom());
+        plan.setValidTo(request.getValidTo());
         return toResponse(repository.save(plan));
     }
 

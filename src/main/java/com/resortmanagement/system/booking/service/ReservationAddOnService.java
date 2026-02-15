@@ -31,7 +31,7 @@ public class ReservationAddOnService {
             .orElseThrow(() -> new ApplicationException("Reservation not found"));
 
         ReservationAddOn addOn = ReservationAddOnMapper.toEntity(request);
-        addOn.setReservationId(reservation);
+        addOn.setReservation(reservation);
 
         repository.save(addOn);
         return ReservationAddOnMapper.toResponse(addOn);

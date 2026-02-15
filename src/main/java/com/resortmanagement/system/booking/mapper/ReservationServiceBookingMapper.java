@@ -24,7 +24,7 @@ public class ReservationServiceBookingMapper {
         ReservationServiceBookingResponse res = new ReservationServiceBookingResponse();
         res.setId(entity.getId());
         res.setServiceItemId(
-            entity.getServiceItemId() != null ? entity.getServiceItemId().getId() : null
+            entity.getServiceItem() != null ? entity.getServiceItem().getId() : null
         );
         res.setScheduledAt(entity.getScheduledAt());
         res.setQuantity(entity.getQuantity());

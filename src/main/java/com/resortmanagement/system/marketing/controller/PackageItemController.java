@@ -1,5 +1,6 @@
 package com.resortmanagement.system.marketing.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -27,15 +28,14 @@ public class PackageItemController {
     }
 
     @GetMapping
-    public ResponseEntity<org.springframework.data.domain.Page<PackageItemDTO>> getAll(
-            @RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<PackageItemDTO>> getAll(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(this.service.findAll(org.springframework.data.domain.PageRequest.of(page, size)));
+        return ResponseEntity.ok(this.service.getAllPackageItemDTOs(org.springframework.data.domain.PageRequest.of(page, size)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PackageItemDTO> getById(@PathVariable UUID id) {
-        return this.service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(this.service.getPackageItemDTOById(id));
     }
 
     @PostMapping
@@ -43,12 +43,12 @@ public class PackageItemController {
         if (dto.getPkgId() == null) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(this.service.save(dto));
+        return ResponseEntity.ok(this.service.addPackageItem(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PackageItemDTO> update(@PathVariable UUID id, @RequestBody PackageItemDTO dto) {
-        return ResponseEntity.ok(this.service.update(id, dto));
+        return ResponseEntity.ok(this.service.updatePackageItem(id, dto));
     }
 
     @DeleteMapping("/{id}")

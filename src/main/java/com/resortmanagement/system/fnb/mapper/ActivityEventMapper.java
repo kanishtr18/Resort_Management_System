@@ -6,11 +6,12 @@ import com.resortmanagement.system.common.enums.ActivityEventStatus;
 import com.resortmanagement.system.fnb.dto.request.ActivityEventRequest;
 import com.resortmanagement.system.fnb.dto.response.ActivityEventResponse;
 import com.resortmanagement.system.fnb.entity.ActivityEvent;
+import com.resortmanagement.system.hr.entity.Employee;
 
 @Component
 public class ActivityEventMapper {
 
-    public ActivityEvent toEntity(ActivityEventRequest request) {
+    public ActivityEvent toEntity(ActivityEventRequest request, Employee instructor) {
         if (request == null) {
             return null;
         }
@@ -20,7 +21,7 @@ public class ActivityEventMapper {
         entity.setStartTime(request.getStartTime());
         entity.setEndTime(request.getEndTime());
         entity.setCapacity(request.getCapacity());
-        entity.setInstructorId(request.getInstructorId());
+        entity.setInstructor(instructor);
         entity.setPrice(request.getPrice());
         entity.setStatus(ActivityEventStatus.SCHEDULED);
         return entity;
@@ -37,13 +38,13 @@ public class ActivityEventMapper {
         response.setStartTime(entity.getStartTime());
         response.setEndTime(entity.getEndTime());
         response.setCapacity(entity.getCapacity());
-        response.setInstructorId(entity.getInstructorId().getId());
+        response.setInstructorId(entity.getInstructor().getId());
         response.setPrice(entity.getPrice());
         response.setStatus(entity.getStatus());
         return response;
     }
 
-    public void updateEntity(ActivityEvent entity, ActivityEventRequest request) {
+    public void updateEntity(ActivityEvent entity, ActivityEventRequest request, Employee instructor) {
         if (entity == null || request == null) {
             return;
         }
@@ -52,7 +53,7 @@ public class ActivityEventMapper {
         entity.setStartTime(request.getStartTime());
         entity.setEndTime(request.getEndTime());
         entity.setCapacity(request.getCapacity());
-        entity.setInstructorId(request.getInstructorId());
+        entity.setInstructor(instructor);
         entity.setPrice(request.getPrice());
     }
 }

@@ -33,11 +33,11 @@ public class ReservationRoomAssignment extends AuditableSoftDeletable {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
-    private Reservation reservationId;
+    private Reservation reservation;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
-    private Room roomId;
+    private Room room;
 
     @Column(name = "check_in_date", nullable = false)
     private LocalDate checkInDate;

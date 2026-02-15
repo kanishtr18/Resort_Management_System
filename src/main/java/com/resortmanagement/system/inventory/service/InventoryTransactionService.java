@@ -12,6 +12,7 @@ import com.resortmanagement.system.inventory.entity.InventoryTransaction;
 import com.resortmanagement.system.inventory.repository.InventoryItemRepository;
 import com.resortmanagement.system.inventory.repository.InventoryTransactionRepository;
 
+@Transactional
 @Service
 public class InventoryTransactionService {
 

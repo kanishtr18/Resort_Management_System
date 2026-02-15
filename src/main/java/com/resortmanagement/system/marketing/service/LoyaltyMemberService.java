@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.resortmanagement.system.common.guest.GuestService;
 import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberRequest;
 import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberResponse;
 import com.resortmanagement.system.marketing.entity.LoyaltyMember;
@@ -21,11 +22,16 @@ public class LoyaltyMemberService {
 
     private final LoyaltyMemberRepository repository;
     private final LoyaltyMemberMapper mapper;
+    private final GuestService guestService;
 
-    public LoyaltyMemberService(LoyaltyMemberRepository loyaltyMemberRepository,
-            LoyaltyMemberMapper loyaltyMemberMapper) {
+    public LoyaltyMemberService(
+        LoyaltyMemberRepository loyaltyMemberRepository,
+        LoyaltyMemberMapper loyaltyMemberMapper, 
+        GuestService guestService
+    ) {
         this.repository = loyaltyMemberRepository;
         this.mapper = loyaltyMemberMapper;
+        this.guestService = guestService;
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +52,7 @@ public class LoyaltyMemberService {
             throw new IllegalArgumentException("Tier is required");
         }
 
-        LoyaltyMember loyaltyMember = mapper.toEntity(dto);
+        LoyaltyMember loyaltyMember = mapper.toEntity(dto, guestService.getGuest(dto.getGuestId()));
         LoyaltyMember saved = repository.save(loyaltyMember);
         return mapper.toResponse(saved);
     }
@@ -54,7 +60,7 @@ public class LoyaltyMemberService {
     public LoyaltyMemberResponse update(UUID id, LoyaltyMemberRequest dto) {
         return repository.findByIdAndDeletedFalse(id)
                 .map(existing -> {
-                    mapper.updateEntity(existing, dto);
+                    mapper.updateEntity(existing, dto, guestService.getGuest(dto.getGuestId()));
                     return mapper.toResponse(repository.save(existing));
                 })
                 .orElseThrow(() -> new RuntimeException("LoyaltyMember not found with id " + id));

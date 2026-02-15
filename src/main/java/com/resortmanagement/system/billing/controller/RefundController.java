@@ -2,6 +2,7 @@ package com.resortmanagement.system.billing.controller;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ import com.resortmanagement.system.billing.dto.RefundResponse;
 import com.resortmanagement.system.billing.entity.Refund;
 import com.resortmanagement.system.billing.mapper.BillingMapper;
 import com.resortmanagement.system.billing.service.RefundService;
-import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
@@ -33,7 +33,7 @@ import jakarta.validation.Valid;
  *  - POST /api/billing/refunds/{id}/process - Process refund (REQUESTED/PROCESSING -> SUCCESS/FAILED)
  */
 @RestController
-@RequestMapping(" /api/billing/refunds")
+@RequestMapping("/api/billing/refunds")
 public class RefundController {
 
     private final RefundService service;

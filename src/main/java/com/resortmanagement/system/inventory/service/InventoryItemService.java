@@ -6,11 +6,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.resortmanagement.system.inventory.entity.InventoryItem;
 import com.resortmanagement.system.inventory.repository.InventoryItemRepository;
 
 @Service
+@Transactional
 public class InventoryItemService {
 
     private final InventoryItemRepository repository;
@@ -47,6 +49,11 @@ public class InventoryItemService {
      */
     public Optional<com.resortmanagement.system.inventory.dto.response.InventoryItemResponse> findById(UUID id) {
         return repository.findById(id).map(mapper::toResponse);
+    }
+
+    public InventoryItem findInventoryItem(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inventory item not found: " + id));
     }
 
     /**

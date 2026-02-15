@@ -61,38 +61,22 @@ public class FolioController {
 
     @PostMapping
     public ResponseEntity<FolioResponse> create(@Valid @RequestBody FolioRequest request) {
-        Folio folio = BillingMapper.toEntity(request);
-        folio.setReservationId(service.getReservation(request.getReservationId()));
-        folio.setBookingGuestId(service.getBookingGuest(request.getBookingGuestId()));
-        Folio created = service.save(folio);
-        FolioResponse response = BillingMapper.toResponse(created);
-        response.setReservationId(created.getReservationId().getId());
-        response.setBookingGuestId(created.getBookingGuestId().getId());
+        FolioResponse response = service.createFolioForReservation(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FolioResponse> update(@PathVariable UUID id, @Valid @RequestBody FolioRequest request) {
-        if (!service.findById(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        Folio folio = BillingMapper.toEntity(request);
-        folio.setReservationId(service.getReservation(request.getReservationId()));
-        folio.setBookingGuestId(service.getBookingGuest(request.getBookingGuestId()));
-        folio.setId(id);
-        Folio updated = service.save(folio);
-        FolioResponse response = BillingMapper.toResponse(updated);
-        response.setReservationId(updated.getReservationId().getId());
-        response.setBookingGuestId(updated.getBookingGuestId().getId());
-        return ResponseEntity.ok(response);
+        FolioResponse updated = service.updateFolio(id, request);
+        return ResponseEntity.ok(updated);
     }
 
     @PostMapping("/{id}/close")
     public ResponseEntity<FolioResponse> closeFolio(@PathVariable UUID id) {
         Folio closed = service.closeFolio(id);
         FolioResponse response = BillingMapper.toResponse(closed);
-        response.setReservationId(closed.getReservationId().getId());
-        response.setBookingGuestId(closed.getBookingGuestId().getId());
+        response.setReservationId(closed.getReservation().getId());
+        response.setBookingGuestId(closed.getBookingGuest().getId());
         return ResponseEntity.ok(response);
     }
 
@@ -100,8 +84,8 @@ public class FolioController {
     public ResponseEntity<FolioResponse> voidFolio(@PathVariable UUID id) {
         Folio voided = service.voidFolio(id);
         FolioResponse response = BillingMapper.toResponse(voided);
-        response.setReservationId(voided.getReservationId().getId());
-        response.setBookingGuestId(voided.getBookingGuestId().getId());
+        response.setReservationId(voided.getReservation().getId());
+        response.setBookingGuestId(voided.getBookingGuest().getId());
         return ResponseEntity.ok(response);
     }
 }

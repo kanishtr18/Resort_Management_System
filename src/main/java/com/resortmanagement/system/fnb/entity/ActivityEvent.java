@@ -49,7 +49,7 @@ public class ActivityEvent extends AuditableSoftDeletable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", nullable = false)
-    private Employee instructorId;
+    private Employee instructor;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;

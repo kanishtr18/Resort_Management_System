@@ -36,7 +36,7 @@ public class PurchaseOrderService {
     public List<com.resortmanagement.system.inventory.dto.response.PurchaseOrderResponse> findAll() {
         return repository.findAll().stream()
                 .map(po -> {
-                    com.resortmanagement.system.inventory.entity.Supplier supplier = supplierRepository.findById(po.getSupplierId().getId()).orElse(null);
+                    com.resortmanagement.system.inventory.entity.Supplier supplier = supplierRepository.findById(po.getSupplier().getId()).orElse(null);
                     // Fetch lines if not creating N+1, or rely on lazy load + transaction (or join fetch in repo)
                     // For now assuming lazy load works within transaction or default
                     return mapper.toResponse(po, supplier, null); // Lines might need separate fetch if not in PO entity OneToMany? 
@@ -93,7 +93,7 @@ public class PurchaseOrderService {
     
     public Optional<com.resortmanagement.system.inventory.dto.response.PurchaseOrderResponse> findById(UUID id) {
          return repository.findById(id).map(po -> {
-             com.resortmanagement.system.inventory.entity.Supplier supplier = supplierRepository.findById(po.getSupplierId().getId()).orElse(null);
+             com.resortmanagement.system.inventory.entity.Supplier supplier = supplierRepository.findById(po.getSupplier().getId()).orElse(null);
              return mapper.toResponse(po, supplier, null);
          });
     }

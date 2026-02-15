@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingGuestRequest{
-    private UUID reservationId;
     private UUID guestId;
     private GuestType guestType;
     private Integer age;

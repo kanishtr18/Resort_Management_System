@@ -21,7 +21,7 @@ public class ReservationRoomAssignmentMapper {
 
         ReservationRoomAssignmentResponse res = new ReservationRoomAssignmentResponse();
         res.setId(entity.getId());
-        res.setRoomId(entity.getRoomId() != null ? entity.getRoomId().getId() : null);
+        res.setRoomId(entity.getRoom() != null ? entity.getRoom().getId() : null);
         res.setCheckInDate(entity.getCheckInDate());
         res.setCheckOutDate(entity.getCheckOutDate());
         res.setStatus(entity.getStatus());

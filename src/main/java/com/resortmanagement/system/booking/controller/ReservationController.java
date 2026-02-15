@@ -57,7 +57,6 @@ public class ReservationController {
     public ResponseEntity<ReservationDetailResponse> createReservation(
         @RequestBody @Valid ReservationCreateRequest request
     ) {
-        // TODO: add validation
         return ResponseEntity.ok(service.createReservation(request));
     }
 
@@ -80,7 +79,6 @@ public class ReservationController {
         @PathVariable UUID id, 
         @RequestBody @Valid ReservationUpdateRequest request
     ) {
-        // TODO: implement update logic
         service.updateReservation(id, request);
         return ResponseEntity.ok(request);
     }

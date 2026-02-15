@@ -37,6 +37,11 @@ public class EmployeeService {
         return repository.findByIdAndDeletedFalse(id).map(mapper::toResponse);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Employee> findEmployeeById(UUID id) {
+        return repository.findByIdAndDeletedFalse(id);
+    }
+
     public EmployeeResponse save(EmployeeRequest dto) {
         if (dto.getFirstName() == null || dto.getFirstName().isEmpty()) {
             throw new IllegalArgumentException("First name is required");

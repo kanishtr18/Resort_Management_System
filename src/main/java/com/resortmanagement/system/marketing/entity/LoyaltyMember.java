@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 import com.resortmanagement.system.common.audit.AuditableSoftDeletable;
+import com.resortmanagement.system.common.guest.Guest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,8 +36,9 @@ public class LoyaltyMember extends AuditableSoftDeletable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "guest_id", nullable = false, unique = true)
-    private UUID guestId;
+    @OneToOne(mappedBy = "loyaltyMember")
+    @JoinColumn(name = "guest_id", nullable = false, unique = true)
+    private Guest guest;
 
     @Column(nullable = false)
     private String tier;

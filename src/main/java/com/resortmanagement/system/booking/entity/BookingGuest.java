@@ -21,6 +21,7 @@ package com.resortmanagement.system.booking.entity;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
+
 import com.resortmanagement.system.common.audit.AuditableSoftDeletable;
 import com.resortmanagement.system.common.enums.GuestType;
 import com.resortmanagement.system.common.guest.Guest;
@@ -50,11 +51,11 @@ public class BookingGuest extends AuditableSoftDeletable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", nullable = false)
-    private Guest guestId;
+    private Guest guest;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
-    private Reservation reservationId;
+    private Reservation reservation;
 
     /** Indicates if this guest is the primary contact for the reservation */
     @Column(name = "is_primary", nullable = false)

@@ -33,7 +33,7 @@ public class OrderMapper {
         response.setId(entity.getId());
         response.setTableId(entity.getTableId());
         response.setTotalAmount(entity.getTotalAmount());
-        response.setAssignedFolioId(entity.getAssignedFolioId() != null ? entity.getAssignedFolioId().getId() : null);
+        response.setAssignedFolioId(entity.getAssignedFolio() != null ? entity.getAssignedFolio().getId() : null);
         if (entity.getStatus() != null) {
             response.setStatus(entity.getStatus().name());
         }

@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import com.resortmanagement.system.common.enums.ReservationStatus;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +19,5 @@ public class ReservationCreateRequest {
         private List<BookingGuestRequest> bookingGuests;
         private UUID bookingSourceId;
         private Boolean isPackageBooking;
-        private ReservationStatus status;
         private List<AddOnSelectionRequest> addOns;
 }

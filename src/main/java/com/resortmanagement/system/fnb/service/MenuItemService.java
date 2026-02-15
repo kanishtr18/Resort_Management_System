@@ -46,7 +46,12 @@ public class MenuItemService {
     }
 
     public Optional<MenuItemResponse> findById(UUID id) {
-        return repository.findById(id).map(mapper::toResponse);
+        return repository.findByIdAndDeletedFalse(id).map(mapper::toResponse);
+    }
+
+    public MenuItem findMenuItem(UUID id) {
+        return repository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new RuntimeException("MenuItem not found: " + id));
     }
 
     @Transactional
@@ -79,7 +84,7 @@ public class MenuItemService {
     }
 
     public com.resortmanagement.system.fnb.dto.response.MenuItemResponse update(UUID id, com.resortmanagement.system.fnb.dto.request.MenuItemRequest request) {
-        MenuItem entity = repository.findById(id)
+        MenuItem entity = repository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new RuntimeException("MenuItem not found: " + id));
         
         mapper.updateEntity(entity, request);

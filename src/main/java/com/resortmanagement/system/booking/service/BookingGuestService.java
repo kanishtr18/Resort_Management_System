@@ -31,7 +31,7 @@ public class BookingGuestService {
             .orElseThrow(() -> new ApplicationException("Reservation not found"));
 
         BookingGuest guest = BookingGuestMapper.toEntity(request);
-        guest.setReservationId(reservation);
+        guest.setReservation(reservation);
 
         bookingGuestRepository.save(guest);
         return BookingGuestMapper.toResponse(guest);

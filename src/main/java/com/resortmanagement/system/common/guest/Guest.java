@@ -6,10 +6,16 @@ import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
 import com.resortmanagement.system.common.audit.AuditableSoftDeletable;
+import com.resortmanagement.system.common.enums.GuestType;
+import com.resortmanagement.system.marketing.entity.LoyaltyMember;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -46,6 +52,10 @@ public class Guest extends AuditableSoftDeletable {
     @Column(name = "email", nullable = false, unique = true, length = 150)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "guest_type", length = 50)
+    private GuestType guestType;
+
     @Column(name = "phone", length = 20)
     private String phone;
 
@@ -55,6 +65,10 @@ public class Guest extends AuditableSoftDeletable {
     @Column(name = "dob")
     private LocalDate dob;
 
-    @Column(name = "loyalty_id", length = 50)
-    private String loyaltyId;
+    @OneToOne   
+    @JoinColumn(name = "loyalty_id", nullable = true)
+    private LoyaltyMember loyaltyMember;
+
+    @Column(name = "age")
+    private Integer age;
 }

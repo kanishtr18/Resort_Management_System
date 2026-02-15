@@ -21,8 +21,8 @@ public class BookingGuestMapper {
 
         BookingGuestResponse res = new BookingGuestResponse();
         res.setId(entity.getId());
-        res.setGuestId(entity.getGuestId() != null ? entity.getGuestId().getId() : null);
-        res.setReservationId(entity.getReservationId() != null ? entity.getReservationId().getId() : null);
+        res.setGuestId(entity.getGuest() != null ? entity.getGuest().getId() : null);
+        res.setReservationId(entity.getReservation() != null ? entity.getReservation().getId() : null);
         res.setIsPrimary(entity.isPrimary());
         res.setGuestType(entity.getGuestType());
         res.setAge(entity.getAge());

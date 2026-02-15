@@ -39,6 +39,11 @@ public class RoomTypeService {
         return RoomTypeMapper.toResponse(entity);
     }
 
+    public RoomType getRoomType(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("RoomType not found"));
+    }
+
     public RoomTypeResponse update(UUID id, RoomTypeUpdateRequest request) {
         RoomType entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RoomType not found"));

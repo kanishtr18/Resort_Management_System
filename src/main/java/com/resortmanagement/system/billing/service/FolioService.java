@@ -7,14 +7,17 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.resortmanagement.system.billing.dto.FolioRequest;
+import com.resortmanagement.system.billing.dto.FolioResponse;
 import com.resortmanagement.system.billing.entity.Folio;
 import com.resortmanagement.system.billing.entity.FolioStatus;
+import com.resortmanagement.system.billing.mapper.BillingMapper;
 import com.resortmanagement.system.billing.repository.FolioRepository;
 import com.resortmanagement.system.booking.entity.BookingGuest;
 import com.resortmanagement.system.booking.entity.Reservation;
+import com.resortmanagement.system.booking.repository.BookingGuestRepository;
 import com.resortmanagement.system.booking.repository.ReservationRepository;
 import com.resortmanagement.system.common.exception.ApplicationException;
-import com.resortmanagement.system.booking.repository.BookingGuestRepository;
 /**
  * FolioService
  * Purpose:
@@ -79,6 +82,53 @@ public class FolioService {
     public BookingGuest getBookingGuest(UUID bookingGuestId) {
         return bookingGuestRepository.findByIdAndDeletedFalse(bookingGuestId)
                 .orElseThrow(() -> new ApplicationException("Booking guest not found with id: " + bookingGuestId));
+    }
+    
+    public FolioResponse createFolioForReservation(FolioRequest request ) {
+        Folio folio = BillingMapper.toEntity(request);
+        folio.setReservation(reservationRepository.findByIdAndDeletedFalse(request.getReservationId())
+                .orElseThrow(() -> new ApplicationException("Reservation not found with id: " + request.getReservationId())));
+        folio.setBookingGuest(bookingGuestRepository.findByIdAndDeletedFalse(request.getBookingGuestId())
+                .orElseThrow(() -> new ApplicationException("Booking guest not found with id: " + request.getBookingGuestId())));
+        
+        Folio created = save(folio);
+        FolioResponse response = BillingMapper.toResponse(created);
+        response.setReservationId(created.getReservation().getId());
+        response.setBookingGuestId(created.getBookingGuest().getId());
+        return response;
+    }
+
+    public Folio createFolioForReservation(UUID reservationId, UUID bookingGuestId) {
+        Folio folio = new Folio();
+        folio.setReservation(reservationRepository.findByIdAndDeletedFalse(reservationId)
+                .orElseThrow(() -> new ApplicationException("Reservation not found with id: " + reservationId)));
+        folio.setBookingGuest(bookingGuestRepository.findByIdAndDeletedFalse(bookingGuestId)
+                .orElseThrow(() -> new ApplicationException("Booking guest not found with id: " + bookingGuestId)));
+        folio.setStatus(FolioStatus.OPEN);
+        
+        save(folio);
+        return folio;
+    }
+
+    public FolioResponse updateFolio(UUID id, FolioRequest request) {
+        Folio folio = repository.findById(id)
+                .orElseThrow(() -> new ApplicationException("Folio not found with id: " + id));
+        
+        if (folio.getStatus() == FolioStatus.CLOSED) {
+            throw new ApplicationException("Cannot update a closed folio");
+        }
+        if (folio.getStatus() == FolioStatus.VOID) {
+            throw new ApplicationException("Cannot update a voided folio");
+        }
+
+        folio.setName(request.getName());
+        folio.setStatus(request.getStatus() != null ? request.getStatus() : folio.getStatus());
+        Folio updated = save(folio);
+        
+        FolioResponse response = BillingMapper.toResponse(updated);
+        response.setReservationId(updated.getReservation().getId());
+        response.setBookingGuestId(updated.getBookingGuest().getId());
+        return response;
     }
 
     public Folio save(Folio folio) {

@@ -20,7 +20,6 @@ public class  ReservationMapper {
         entity.setNumGuests(req.getNumGuests());
         entity.setBookingSourceId(req.getBookingSourceId());
         entity.setIsPackageBooking(req.getIsPackageBooking());
-        entity.setStatus(req.getStatus());
         return entity;
     }
 
@@ -39,7 +38,7 @@ public class  ReservationMapper {
 
         ReservationResponse res = new ReservationResponse();
         res.setId(entity.getId());
-        res.setGuestId(entity.getGuestId() != null ? entity.getGuestId().getId() : null);
+        res.setGuestId(entity.getGuest() != null ? entity.getGuest().getId() : null);
         res.setStartDate(entity.getStartDate());
         res.setEndDate(entity.getEndDate());
         res.setNumGuests(entity.getNumGuests());

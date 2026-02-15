@@ -67,7 +67,7 @@ public class Reservation extends AuditableSoftDeletable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", nullable = false)
-    private Guest guestId;
+    private Guest guest;
 
     private UUID bookingSourceId;
     private Boolean isPackageBooking;
@@ -87,18 +87,18 @@ public class Reservation extends AuditableSoftDeletable {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @OneToMany(mappedBy = "reservationId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ReservationDailyRate> dailyRates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reservationId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ReservationServiceBooking> serviceBookings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reservationId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ReservationAddOn> addOns = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reservationId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<BookingGuest> bookingGuests = new HashSet<>();
 
-    @OneToMany(mappedBy = "reservationId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ReservationRoomAssignment> assignedRooms = new ArrayList<>();
 }

@@ -1,5 +1,5 @@
 /*
-TODO: ReservationDailyRateController.java
+ReservationDailyRateController.java
 Purpose:
  - Endpoints for maintenance/inspection of daily rates (admin read-only), not general CRUD.
 Suggested endpoints:

@@ -1,6 +1,8 @@
 package com.resortmanagement.system.marketing.mapper;
 
 import org.springframework.stereotype.Component;
+
+import com.resortmanagement.system.common.guest.Guest;
 import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberRequest;
 import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberResponse;
 import com.resortmanagement.system.marketing.entity.LoyaltyMember;
@@ -17,11 +19,11 @@ public class LoyaltyMemberMapper {
         }
 
         // In a real application, fetch guest name from Guest service or repository
-        String guestName = "Guest " + entity.getGuestId();
+        String guestName = "Guest " + entity.getGuest().getId();
 
         return LoyaltyMemberResponse.builder()
                 .id(entity.getId())
-                .guestId(entity.getGuestId())
+                .guestId(entity.getGuest().getId())
                 .guestName(guestName)
                 .tier(entity.getTier())
                 .pointsBalance(entity.getPointsBalance())
@@ -35,13 +37,13 @@ public class LoyaltyMemberMapper {
     /**
      * Convert LoyaltyMemberRequest DTO to LoyaltyMember entity
      */
-    public LoyaltyMember toEntity(LoyaltyMemberRequest request) {
+    public LoyaltyMember toEntity(LoyaltyMemberRequest request, Guest guest) {
         if (request == null) {
             return null;
         }
 
         return LoyaltyMember.builder()
-                .guestId(request.getGuestId())
+                .guest(guest)
                 .tier(request.getTier())
                 .pointsBalance(request.getPointsBalance())
                 .enrolledAt(request.getEnrolledAt())
@@ -52,12 +54,12 @@ public class LoyaltyMemberMapper {
     /**
      * Update existing LoyaltyMember entity from LoyaltyMemberRequest DTO
      */
-    public void updateEntity(LoyaltyMember entity, LoyaltyMemberRequest request) {
+    public void updateEntity(LoyaltyMember entity, LoyaltyMemberRequest request, Guest guest) {
         if (entity == null || request == null) {
             return;
         }
 
-        entity.setGuestId(request.getGuestId());
+        entity.setGuest(guest);
         entity.setTier(request.getTier());
         entity.setPointsBalance(request.getPointsBalance());
         entity.setEnrolledAt(request.getEnrolledAt());

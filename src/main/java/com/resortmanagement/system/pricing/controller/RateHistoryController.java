@@ -1,5 +1,5 @@
 /*
-TODO: RateHistoryController.java
+ RateHistoryController.java
 Purpose:
  - Manage seasonal rate overrides associated to RatePlan.
 Endpoints:

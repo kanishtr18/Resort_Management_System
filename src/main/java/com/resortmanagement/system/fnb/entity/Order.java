@@ -82,7 +82,7 @@ public class Order extends AuditableSoftDeletable {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_folio_id")
-    private Folio assignedFolioId;
+    private Folio assignedFolio;
 
     /**
      * Order → OrderItem (bidirectional)

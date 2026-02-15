@@ -52,7 +52,7 @@ public class ReservationDailyRate extends Auditable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
-    private Reservation reservationId;
+    private Reservation reservation;
 
     private LocalDate date;
 
@@ -63,6 +63,6 @@ public class ReservationDailyRate extends Auditable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rate_plan_id")
-    private RatePlan ratePlanId;
+    private RatePlan ratePlan;
 
 }

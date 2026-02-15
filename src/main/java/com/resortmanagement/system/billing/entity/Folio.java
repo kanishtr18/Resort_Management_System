@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
+
 import com.resortmanagement.system.booking.entity.BookingGuest;
 import com.resortmanagement.system.booking.entity.Reservation;
 import com.resortmanagement.system.common.audit.Auditable;
@@ -78,11 +79,11 @@ public class Folio extends Auditable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
-    private Reservation reservationId;
+    private Reservation reservation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_guest_id", insertable = false, updatable = false)
-    private BookingGuest bookingGuestId; 
+    private BookingGuest bookingGuest; 
 
     @OneToMany(mappedBy = "folio", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     private List<Invoice> invoices = new ArrayList<>();

@@ -35,7 +35,7 @@ public class ReservationRoomAssignmentService {
 
         ReservationRoomAssignment assignment =
             ReservationRoomAssignmentMapper.toEntity(request);
-        assignment.setReservationId(reservation);
+        assignment.setReservation(reservation);
 
         repository.save(assignment);
         return ReservationRoomAssignmentMapper.toResponse(assignment);
@@ -44,7 +44,7 @@ public class ReservationRoomAssignmentService {
     public void unassignRoom(UUID assignmentId) {
         ReservationRoomAssignment assignment = repository.findByIdAndDeletedFalse(assignmentId)
             .orElseThrow(() -> new ApplicationException("Room assignment not found"));
-        assignment.getRoomId().setStatus(RoomStatus.AVAILABLE);
+        assignment.getRoom().setStatus(RoomStatus.AVAILABLE);
         repository.save(assignment);
     }
 }

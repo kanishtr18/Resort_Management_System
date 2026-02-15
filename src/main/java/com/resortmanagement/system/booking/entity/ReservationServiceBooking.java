@@ -53,15 +53,15 @@ public class ReservationServiceBooking extends AuditableSoftDeletable {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
-    private Reservation reservationId;
+    private Reservation reservation;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "folio_id", nullable = false)
-    private Folio folioId;
+    private Folio folio;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "service_item_id", nullable = false)
-    private ServiceItem serviceItemId;
+    private ServiceItem serviceItem;
 
     @Column(name = "service_date", nullable = false)
     private LocalDateTime scheduledAt;

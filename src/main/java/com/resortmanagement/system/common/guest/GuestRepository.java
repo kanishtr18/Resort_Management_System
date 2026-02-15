@@ -25,8 +25,6 @@ public interface GuestRepository extends SoftDeleteRepository<Guest, UUID>{
 
     Optional<Guest> findByPhone(String phone);
 
-    Optional<Guest> findByLoyaltyId(String loyaltyId);
-
     // Safety checks (used before create/update)
     boolean existsByEmail(String email);
 }
