@@ -1,5 +1,5 @@
 /*
-TODO: HousekeepingTaskController.java
+HousekeepingTaskController.java
 Purpose:
  - Manage housekeeping tasks: schedule cleanings, mark completed.
 Endpoints:
@@ -50,7 +50,7 @@ public class HousekeepingTaskController {
 
     @PutMapping("/{id}")
     public HousekeepingTaskResponse update(@PathVariable UUID id,
-                                           @RequestBody HousekeepingTaskUpdateRequest req) {
+            @RequestBody HousekeepingTaskUpdateRequest req) {
         return service.update(id, req);
     }
 
@@ -59,4 +59,3 @@ public class HousekeepingTaskController {
         service.delete(id);
     }
 }
-

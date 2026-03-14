@@ -29,12 +29,14 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
+
 import com.resortmanagement.system.common.audit.Auditable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
@@ -43,7 +45,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @Entity
@@ -51,6 +52,7 @@ import lombok.Setter;
 public class AccountLedger extends Auditable {
 
     @Id
+    @GeneratedValue(generator="UUID")
     @UuidGenerator
     @Column(name = "ledger_id")
     private UUID id;
@@ -90,6 +92,6 @@ public class AccountLedger extends Auditable {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return java.util.Objects.hashCode(id);
     }
 }

@@ -32,17 +32,12 @@ import com.resortmanagement.system.common.exception.ApplicationException;
 public class InvoiceService {
 
     private final InvoiceRepository repository;
-    private final FolioRepository folioRepository;
-    private final ReservationRepository reservationRepository;
-
     public InvoiceService(
         InvoiceRepository repository,
         FolioRepository folioRepository,
         ReservationRepository reservationRepository
     ) {
         this.repository = repository;
-        this.folioRepository = folioRepository;
-        this.reservationRepository = reservationRepository;
     }
 
     @Transactional(readOnly = true)

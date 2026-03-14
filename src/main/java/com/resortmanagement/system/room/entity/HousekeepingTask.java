@@ -1,5 +1,5 @@
 /*
-TODO: HousekeepingTask.java
+HousekeepingTask.java
 Purpose:
  - Housekeeping work orders for rooms.
 Fields:
@@ -25,7 +25,7 @@ import com.resortmanagement.system.room.enums.HousekeepingStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;    
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -68,5 +68,3 @@ public class HousekeepingTask extends AuditableSoftDeletable {
     @Column(length = 500)
     private String notes;
 }
-
-

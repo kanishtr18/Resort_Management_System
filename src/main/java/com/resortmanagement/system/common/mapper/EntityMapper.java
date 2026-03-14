@@ -1,5 +1,5 @@
 /*
-TODO: EntityMapper.java
+EntityMapper.java
 Purpose:
  - Central mapping interface (MapStruct) or central manual mapper. Prefer small per-domain mappers (ReservationMapper, InvoiceMapper).
 Recommended content:
@@ -13,5 +13,6 @@ package com.resortmanagement.system.common.mapper;
 
 public interface EntityMapper<D, E> {
     D toDto(E entity);
+
     E toEntity(D dto);
 }

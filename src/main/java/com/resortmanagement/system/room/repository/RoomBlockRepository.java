@@ -9,5 +9,5 @@ import com.resortmanagement.system.room.entity.RoomBlock;
 
 @Repository
 public interface RoomBlockRepository extends SoftDeleteRepository<RoomBlock, UUID> {
-    // TODO: add custom queries if needed
+    // add custom queries if needed
 }

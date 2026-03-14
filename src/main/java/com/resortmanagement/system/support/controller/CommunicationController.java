@@ -1,5 +1,5 @@
 /*
-TODO: CommunicationController.java
+CommunicationController.java
 Purpose:
  - Log or send communications (email/SMS) to guests; store sent communications for audit.
 Endpoints:

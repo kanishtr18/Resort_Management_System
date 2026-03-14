@@ -15,22 +15,15 @@ import com.resortmanagement.system.inventory.repository.PurchaseOrderRepository;
 public class PurchaseOrderService {
 
     private final PurchaseOrderRepository repository;
-    private final com.resortmanagement.system.inventory.repository.InventoryItemRepository itemRepository;
     private final com.resortmanagement.system.inventory.repository.SupplierRepository supplierRepository;
     private final com.resortmanagement.system.inventory.mapper.PurchaseOrderMapper mapper;
-    private final InventoryTransactionService transactionService;
-
     public PurchaseOrderService(
             PurchaseOrderRepository repository,
-            com.resortmanagement.system.inventory.repository.InventoryItemRepository itemRepository,
             com.resortmanagement.system.inventory.repository.SupplierRepository supplierRepository,
-            com.resortmanagement.system.inventory.mapper.PurchaseOrderMapper mapper,
-            InventoryTransactionService transactionService) {
+            com.resortmanagement.system.inventory.mapper.PurchaseOrderMapper mapper) {
         this.repository = repository;
-        this.itemRepository = itemRepository;
         this.supplierRepository = supplierRepository;
         this.mapper = mapper;
-        this.transactionService = transactionService;
     }
 
     public List<com.resortmanagement.system.inventory.dto.response.PurchaseOrderResponse> findAll() {

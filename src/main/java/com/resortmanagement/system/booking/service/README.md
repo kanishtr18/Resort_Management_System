@@ -1,4 +1,4 @@
-TODO: Booking Service guidelines
+Booking Service guidelines
 Purpose:
  - Implement business flows in service layer; avoid logic in controllers or repos.
 

@@ -1,5 +1,5 @@
 /*
-TODO: Communication.java
+Communication.java
 Purpose:
  - Store outbound messages (type, to, subject, snippet, status).
 Fields:

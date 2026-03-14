@@ -1,5 +1,5 @@
 /*
-TODO: HelpTicket.java
+HelpTicket.java
 Purpose:
  - Guest request / helpdesk ticket entity.
 Fields:
@@ -68,7 +68,7 @@ public class HelpTicket extends AuditableSoftDeletable {
     private TicketStatus status;
 
     @ManyToOne
-    @JoinColumn(name="assigned_to")
+    @JoinColumn(name = "assigned_to")
     private Guest assignedTo;
 
     @ManyToOne

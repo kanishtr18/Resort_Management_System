@@ -1,4 +1,4 @@
-TODO: Booking repository guidelines
+Booking repository guidelines
 Purpose:
  - All booking repositories extend JpaRepository<Entity, UUID>.
  - Add domain queries:

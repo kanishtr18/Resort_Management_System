@@ -1,5 +1,5 @@
 /*
-TODO: FeedbackReview.java
+FeedbackReview.java
 Purpose:
  - Guest feedback and rating for a stay or service.
 Fields:

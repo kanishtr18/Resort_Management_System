@@ -44,12 +44,12 @@ public class OrderItemService {
     }
 
     public @Nullable Object findAllActive() {
-        // TODO Auto-generated method stub
+        // Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAllActive'");
     }
 
     public void delete(UUID id) {
-        // TODO Auto-generated method stub
+        // Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 }

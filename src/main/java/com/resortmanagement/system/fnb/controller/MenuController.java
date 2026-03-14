@@ -1,5 +1,5 @@
 /*
-TODO: MenuController.java
+MenuController.java
 Purpose:
  - Manage menus and menu grouping (Breakfast, Bar).
 Endpoints:
@@ -46,7 +46,8 @@ public class MenuController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<com.resortmanagement.system.fnb.dto.response.MenuResponse> getById(@PathVariable java.util.UUID id) {
+    public ResponseEntity<com.resortmanagement.system.fnb.dto.response.MenuResponse> getById(
+            @PathVariable java.util.UUID id) {
         return this.menuService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -58,7 +59,7 @@ public class MenuController {
 
     @PutMapping("/{id}")
     public ResponseEntity<com.resortmanagement.system.fnb.dto.response.MenuResponse> update(
-            @PathVariable java.util.UUID id, 
+            @PathVariable java.util.UUID id,
             @jakarta.validation.Valid @RequestBody com.resortmanagement.system.fnb.dto.request.MenuRequest request) {
         return ResponseEntity.ok(this.menuService.update(id, request));
     }

@@ -1,5 +1,5 @@
 /*
-TODO: ReservationServiceBooking.java
+ReservationServiceBooking.java
 Purpose:
  - Entity linking Reservation to ServiceItem (scheduled service).
 Fields:
@@ -51,15 +51,15 @@ public class ReservationServiceBooking extends AuditableSoftDeletable {
     @Column(name = "reservation_service_id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folio_id", nullable = false)
     private Folio folio;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_item_id", nullable = false)
     private ServiceItem serviceItem;
 

@@ -1,4 +1,4 @@
-TODO: Billing Repository template
+Billing Repository template
 Purpose:
  - All billing repositories must extend JpaRepository<Entity, UUID>.
  - Add domain-specific methods where necessary.

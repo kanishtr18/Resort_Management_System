@@ -1,5 +1,5 @@
 /*
-TODO: RoomAmenity.java
+RoomAmenity.java
 Purpose:
  - Join table or entity for amenity master data.
 Fields:
@@ -28,13 +28,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(
-    name = "room_amenities",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"room_id", "amenity_id"})
-)
+@Table(name = "room_amenities", uniqueConstraints = @UniqueConstraint(columnNames = { "room_id", "amenity_id" }))
 @Getter
 @Setter
-public class RoomAmenity extends Auditable{
+public class RoomAmenity extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -50,4 +47,3 @@ public class RoomAmenity extends Auditable{
 
     private Boolean complimentary;
 }
-

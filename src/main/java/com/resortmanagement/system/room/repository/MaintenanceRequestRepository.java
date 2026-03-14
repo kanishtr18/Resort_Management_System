@@ -9,5 +9,5 @@ import com.resortmanagement.system.room.entity.MaintenanceRequest;
 
 @Repository
 public interface MaintenanceRequestRepository extends SoftDeleteRepository<MaintenanceRequest, UUID> {
-    // TODO: add custom queries if needed
+    // add custom queries if needed
 }

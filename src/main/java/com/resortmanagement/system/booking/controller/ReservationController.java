@@ -1,5 +1,5 @@
 /*
-TODO: ReservationController.java
+ReservationController.java
 Purpose:
  - Core booking endpoints: create reservation, modify, confirm, cancel, checkin, checkout.
 Suggested endpoints:

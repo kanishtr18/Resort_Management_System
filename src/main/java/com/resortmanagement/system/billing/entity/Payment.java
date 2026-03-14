@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
+
 import com.resortmanagement.system.common.audit.Auditable;
 import com.resortmanagement.system.common.enums.PaymentStatus;
 
@@ -38,11 +39,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,10 +59,13 @@ import lombok.Setter;
 public class Payment extends Auditable {
 
     @Id
+    @GeneratedValue(generator="UUID")
     @UuidGenerator
     @Column(name = "payment_id", updatable = false, nullable = false)
     private UUID id;
 
+    @Version private Long version;
+    
     @NotNull
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
@@ -79,7 +86,8 @@ public class Payment extends Auditable {
     @Column(name = "status", nullable = false)
     private PaymentStatus status = PaymentStatus.PENDING;
 
-    @Column(name = "provider_response")
+    @Lob
+    @Column(name = "provider_response", columnDefinition="TEXT")
     private String providerResponse;
 
     @Column(name = "processed_at")
@@ -107,6 +115,6 @@ public class Payment extends Auditable {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return java.util.Objects.hashCode(id);
     }
 }

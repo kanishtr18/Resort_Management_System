@@ -1,5 +1,5 @@
 /*
-TODO: JpaConfig.java
+JpaConfig.java
 Purpose:
  - Enable JPA auditing, repositories, and transaction management.
  - Optionally configure Hibernate properties (ddl-auto, show_sql, hibernate.jdbc.batch_size).
@@ -18,4 +18,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = "com.resortmanagement.system")
 @EnableJpaAuditing(auditorAwareRef = "auditorAwareImpl")
 @EnableTransactionManagement
-public class JpaConfig {}
+public class JpaConfig {
+}

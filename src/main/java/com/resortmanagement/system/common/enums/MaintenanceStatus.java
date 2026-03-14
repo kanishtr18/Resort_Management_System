@@ -1,5 +1,5 @@
 /*
-TODO: <Enum>.java
+<Enum>.java
 Purpose:
  - Each enum is domain-specific. Use EnumType.STRING in entities.
 Examples:

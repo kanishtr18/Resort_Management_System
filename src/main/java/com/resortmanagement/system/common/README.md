@@ -59,7 +59,7 @@
 
 #### billing/controller/AccountLedgerController.java
 /*
-TODO: AccountLedgerController.java
+AccountLedgerController.java
 Purpose:
  - Expose REST endpoints for ledger queries and adjustments.
  - Controller should be thin: validate DTOs, call AccountLedgerService.
@@ -84,7 +84,7 @@ File: billing/controller/AccountLedgerController.java
 
 #### billing/entity/AccountLedger.java
 /*
-TODO: AccountLedger.java
+AccountLedger.java
 Purpose:
  - Entity for accounting ledger/accounts used by financial flows (room revenue, F&B, cash).
 Annotations & fields:
@@ -111,7 +111,7 @@ File: billing/entity/AccountLedger.java
 
 #### billing/controller/FolioController.java
 /*
-TODO: FolioController.java
+FolioController.java
 Purpose:
  - Expose folio operations for a reservation: list folios, create folio, attach items, close folio.
 Suggested endpoints:
@@ -131,7 +131,7 @@ File: billing/controller/FolioController.java
 
 #### billing/entity/Folio.java
 /*
-TODO: Folio.java
+Folio.java
 Purpose:
  - Billing bucket entity; multiple folios per reservation allow split billing.
 Fields & annotations:
@@ -153,7 +153,7 @@ File: billing/entity/Folio.java
 
 #### billing/controller/InvoiceController.java
 /*
-TODO: InvoiceController.java
+InvoiceController.java
 Purpose:
  - REST endpoints for invoice life cycle: create invoice from folio, get invoice, list invoices, mark paid/refund.
 Suggested endpoints:
@@ -173,7 +173,7 @@ File: billing/controller/InvoiceController.java
 
 #### billing/entity/Invoice.java
 /*
-TODO: Invoice.java
+Invoice.java
 Purpose:
  - Persisted financial document generated from folio charges.
 Fields:
@@ -198,7 +198,7 @@ File: billing/entity/Invoice.java
 
 #### billing/controller/PaymentController.java
 /*
-TODO: PaymentController.java
+PaymentController.java
 Purpose:
  - Accept payment requests and forward to PaymentService; handle idempotency and webhooks.
 Endpoints:
@@ -216,7 +216,7 @@ File: billing/controller/PaymentController.java
 
 #### billing/entity/Payment.java
 /*
-TODO: Payment.java
+Payment.java
 Purpose:
  - Records payment attempts and results for invoices.
 Fields:
@@ -240,7 +240,7 @@ File: billing/entity/Payment.java
 
 #### billing/controller/RefundController.java
 /*
-TODO: RefundController.java
+RefundController.java
 Purpose:
  - Expose endpoints to create refunds against payments/invoices.
 Endpoints:
@@ -255,7 +255,7 @@ File: billing/controller/RefundController.java
 
 #### billing/entity/Refund.java
 /*
-TODO: Refund.java
+Refund.java
 Purpose:
  - Persist refund operations and statuses.
 Fields:
@@ -277,7 +277,7 @@ File: billing/entity/Refund.java
 
 #### billing/repository/*Repository.java (general)
 /*
-TODO: Billing Repository template
+Billing Repository template
 Purpose:
  - All billing repositories must extend JpaRepository<Entity, UUID>.
  - Add domain-specific methods where necessary.
@@ -296,7 +296,7 @@ File: billing/repository/<Entity>Repository.java
 
 #### billing/service/*Service.java (general)
 /*
-TODO: Billing Service template
+Billing Service template
 Purpose:
  - All services implement an interface in service package and provide a @Service implementation.
  - Services contain transactional business logic.

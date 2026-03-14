@@ -1,5 +1,5 @@
 /*
-TODO: RatePlanController.java
+RatePlanController.java
 Purpose:
  - CRUD for RatePlan.
 Endpoints:
@@ -45,7 +45,7 @@ public class RatePlanController {
 
     @PutMapping("/{id}")
     public RatePlanResponse update(@PathVariable UUID id,
-                                   @RequestBody RatePlanUpdateRequest request) {
+            @RequestBody RatePlanUpdateRequest request) {
         return service.update(id, request);
     }
 
@@ -54,4 +54,3 @@ public class RatePlanController {
         return service.list();
     }
 }
-

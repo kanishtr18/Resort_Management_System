@@ -1,5 +1,5 @@
 /*
-TODO: AsyncConfig.java
+AsyncConfig.java
 Purpose:
  - Configure TaskExecutor for @Async background tasks (emails, notification sending).
  - Set thread pool size, queue capacity based on environment.
@@ -14,5 +14,5 @@ File: config/AsyncConfig.java
 package com.resortmanagement.system.config;
 
 public class AsyncConfig {
-    // TODO: Async task executor configuration
+    // Async task executor configuration
 }

@@ -3,7 +3,6 @@ package com.resortmanagement.system.hr.mapper;
 import org.springframework.stereotype.Component;
 import com.resortmanagement.system.hr.dto.employee.EmployeeRequest;
 import com.resortmanagement.system.hr.dto.employee.EmployeeResponse;
-import com.resortmanagement.system.hr.dto.role.RoleResponse;
 import com.resortmanagement.system.hr.entity.Employee;
 import java.util.Collections;
 import java.util.stream.Collectors;

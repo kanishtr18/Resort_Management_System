@@ -9,10 +9,11 @@ import com.resortmanagement.system.booking.dto.response.ReservationDetailRespons
 import com.resortmanagement.system.booking.dto.response.ReservationResponse;
 import com.resortmanagement.system.booking.entity.Reservation;
 
-public class  ReservationMapper {
+public class ReservationMapper {
 
     public static Reservation toEntity(ReservationCreateRequest req) {
-        if (req == null) return null;
+        if (req == null)
+            return null;
 
         Reservation entity = new Reservation();
         entity.setStartDate(req.getStartDate());
@@ -24,17 +25,19 @@ public class  ReservationMapper {
     }
 
     public static void updateEntity(Reservation entity, ReservationUpdateRequest req) {
-        if (req == null || entity == null) return;
+        if (req == null || entity == null)
+            return;
 
         entity.setStartDate(req.getStartDate());
         entity.setEndDate(req.getEndDate());
         entity.setNumGuests(req.getNumGuests());
         entity.setStatus(req.getStatus());
-        // TODO: bookingguest update, addon, services update are handled in services.
+        // bookingguest update, addon, services update are handled in services.
     }
 
     public static ReservationResponse toResponse(Reservation entity) {
-        if (entity == null) return null;
+        if (entity == null)
+            return null;
 
         ReservationResponse res = new ReservationResponse();
         res.setId(entity.getId());
@@ -47,7 +50,8 @@ public class  ReservationMapper {
     }
 
     public static ReservationDetailResponse toDetailResponse(Reservation entity) {
-        if (entity == null) return null;
+        if (entity == null)
+            return null;
 
         ReservationDetailResponse res = new ReservationDetailResponse();
         res.setId(entity.getId());
@@ -57,49 +61,44 @@ public class  ReservationMapper {
         res.setStatus(entity.getStatus());
 
         res.setGuests(
-            entity.getBookingGuests() == null
-                ? Collections.emptyList()
-                : entity.getBookingGuests()
-                    .stream()
-                    .map(BookingGuestMapper::toResponse)
-                    .collect(Collectors.toList())
-        );
+                entity.getBookingGuests() == null
+                        ? Collections.emptyList()
+                        : entity.getBookingGuests()
+                                .stream()
+                                .map(BookingGuestMapper::toResponse)
+                                .collect(Collectors.toList()));
 
         res.setRoomAssignments(
-            entity.getAssignedRooms() == null
-                ? Collections.emptyList()
-                : entity.getAssignedRooms()
-                    .stream()
-                    .map(ReservationRoomAssignmentMapper::toResponse)
-                    .collect(Collectors.toList())
-        );
+                entity.getAssignedRooms() == null
+                        ? Collections.emptyList()
+                        : entity.getAssignedRooms()
+                                .stream()
+                                .map(ReservationRoomAssignmentMapper::toResponse)
+                                .collect(Collectors.toList()));
 
         res.setDailyRates(
-            entity.getDailyRates()
-                .stream()
-                .map(ReservationDailyRateMapper::toResponse)
-                .collect(Collectors.toList())
-        );
+                entity.getDailyRates()
+                        .stream()
+                        .map(ReservationDailyRateMapper::toResponse)
+                        .collect(Collectors.toList()));
 
         res.setAddOns(
-            entity.getAddOns() == null
-                ? Collections.emptyList()
-                : entity.getAddOns()
-                    .stream()
-                    .map(ReservationAddOnMapper::toResponse)
-                    .collect(Collectors.toList())
-        );
+                entity.getAddOns() == null
+                        ? Collections.emptyList()
+                        : entity.getAddOns()
+                                .stream()
+                                .map(ReservationAddOnMapper::toResponse)
+                                .collect(Collectors.toList()));
 
         res.setServices(
-            entity.getServiceBookings() == null
-                ? Collections.emptyList()
-                : entity.getServiceBookings()
-                    .stream()
-                    .map(ReservationServiceBookingMapper::toResponse)
-                    .collect(Collectors.toList())
-        );
+                entity.getServiceBookings() == null
+                        ? Collections.emptyList()
+                        : entity.getServiceBookings()
+                                .stream()
+                                .map(ReservationServiceBookingMapper::toResponse)
+                                .collect(Collectors.toList()));
 
         return res;
     }
-    
+
 }

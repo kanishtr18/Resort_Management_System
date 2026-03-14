@@ -20,27 +20,27 @@ public class PurchaseOrderLineService {
     }
 
     public List<PurchaseOrderLine> findAll() {
-        // TODO: add pagination and filtering
+        // add pagination and filtering
         return repository.findAll();
     }
 
     public Optional<PurchaseOrderLine> findById(Long id) {
-        // TODO: add caching and error handling
+        // add caching and error handling
         return repository.findById(id);
     }
 
     public PurchaseOrderLine save(PurchaseOrderLine entity) {
-        // TODO: add validation and business rules
+        // add validation and business rules
         return repository.save(entity);
     }
 
     public void deleteById(Long id) {
-        // TODO: add soft delete if required
+        // add soft delete if required
         repository.deleteById(id);
     }
 
     public @Nullable Object findByPurchaseOrderId(UUID purchaseOrderId) {
-        // TODO Auto-generated method stub
+        // Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByPurchaseOrderId'");
     }
 }

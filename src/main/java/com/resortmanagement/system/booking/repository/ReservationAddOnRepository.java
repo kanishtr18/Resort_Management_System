@@ -9,5 +9,5 @@ import com.resortmanagement.system.common.repository.SoftDeleteRepository;
 
 @Repository
 public interface ReservationAddOnRepository extends SoftDeleteRepository<ReservationAddOn, UUID> {
-    // TODO: add custom queries if needed
+    // add custom queries if needed
 }

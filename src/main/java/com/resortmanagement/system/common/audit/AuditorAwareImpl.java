@@ -1,5 +1,5 @@
 /*
-TODO: AuditorAwareImpl.java
+AuditorAwareImpl.java
 Purpose:
  - Provide the current auditor (user) to JPA auditing.
 Implementation:
@@ -26,16 +26,18 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         // try {
-        //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //     if (authentication != null && authentication.isAuthenticated()) {
-        //         // If using a custom principal object, adapt here (e.g., ((UserDetails)authentication.getPrincipal()).getUsername())
-        //         return Optional.ofNullable(authentication.getName());
-        //     }
+        // Authentication authentication =
+        // SecurityContextHolder.getContext().getAuthentication();
+        // if (authentication != null && authentication.isAuthenticated()) {
+        // // If using a custom principal object, adapt here (e.g.,
+        // ((UserDetails)authentication.getPrincipal()).getUsername())
+        // return Optional.ofNullable(authentication.getName());
+        // }
         // } catch (Exception ex) {
-        //     // never break auditing due to security context issues
+        // // never break auditing due to security context issues
         // }
         // // fallback
         return Optional.ofNullable("system_user");
     }
-    
+
 }

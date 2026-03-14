@@ -1,4 +1,4 @@
-TODO: Billing Service template
+Billing Service template
 Purpose:
  - All services implement an interface in service package and provide a @Service implementation.
  - Services contain transactional business logic.

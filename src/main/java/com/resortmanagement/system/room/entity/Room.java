@@ -1,5 +1,5 @@
 /*
-TODO: Room.java
+Room.java
 Purpose:
  - Physical room representation.
 Fields:
@@ -68,7 +68,7 @@ public class Room extends AuditableSoftDeletable {
     @JoinColumn(name = "room_type_id", nullable = false)
     private RoomType roomType;
 
-    @OneToMany(mappedBy = "room", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private List<RoomAmenity> roomAmenities = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
@@ -80,6 +80,4 @@ public class Room extends AuditableSoftDeletable {
     @OneToMany(mappedBy = "room")
     private List<HousekeepingTask> housekeepingTasks = new ArrayList<>();
 
-
 }
-

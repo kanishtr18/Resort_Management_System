@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
+
 import com.resortmanagement.system.booking.entity.Reservation;
 import com.resortmanagement.system.common.audit.Auditable;
 
@@ -39,6 +40,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -57,6 +59,7 @@ import lombok.Setter;
 public class Invoice extends Auditable {
 
     @Id
+    @GeneratedValue(generator="UUID")
     @UuidGenerator
     @Column(name = "invoice_id", updatable = false, nullable = false)
     private UUID id;
@@ -94,11 +97,11 @@ public class Invoice extends Auditable {
     // Refund
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "folio_id", insertable = false, updatable = false)
+    @JoinColumn(name = "folio_id")
     private Folio folio;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
+    @JoinColumn(name = "reservation_id")
     private Reservation reservation; 
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
@@ -116,6 +119,6 @@ public class Invoice extends Auditable {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return java.util.Objects.hashCode(id);
     }
 }

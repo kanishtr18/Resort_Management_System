@@ -1,5 +1,5 @@
 /*
-TODO: ApplicationException.java
+ApplicationException.java
 Purpose:
  - Base runtime exception for domain errors.
  - Provide constructors for message, cause, and error code.
@@ -11,5 +11,7 @@ File: common/exception/ApplicationException.java
 package com.resortmanagement.system.common.exception;
 
 public class ApplicationException extends RuntimeException {
-    public ApplicationException(String message) { super(message); }
+    public ApplicationException(String message) {
+        super(message);
+    }
 }

@@ -1,5 +1,5 @@
 /*
-TODO: RoomBlock.java
+RoomBlock.java
 Purpose:
  - Represents out-of-service block for a room.
 Fields:
@@ -60,6 +60,6 @@ public class RoomBlock extends AuditableSoftDeletable {
     private BlockStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "room_id" , nullable = false)
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 }

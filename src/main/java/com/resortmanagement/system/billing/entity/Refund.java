@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
+
 import com.resortmanagement.system.common.audit.Auditable;
 
 import jakarta.persistence.Column;
@@ -32,10 +33,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,10 +51,13 @@ import lombok.Setter;
 public class Refund extends Auditable {
 
     @Id
+    @GeneratedValue(generator="UUID")
     @UuidGenerator
     @Column(name = "refund_id", updatable = false, nullable = false)
     private UUID id;
 
+    @Version private Long version;
+    
     @NotNull
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
@@ -92,6 +98,6 @@ public class Refund extends Auditable {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return java.util.Objects.hashCode(id);
     }
 }

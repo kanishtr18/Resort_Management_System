@@ -1,5 +1,5 @@
 /*
-TODO: ReservationServiceBookingController.java
+ReservationServiceBookingController.java
 Purpose:
  - Expose endpoints for services (staff-delivered) associated to reservations (spa, shuttle).
 Endpoints:
@@ -43,15 +43,13 @@ public class ReservationServiceBookingController {
     @PostMapping
     public ResponseEntity<ReservationServiceBookingResponse> bookService(
             @PathVariable UUID reservationId,
-            @RequestBody @Valid ReservationServiceBookingRequest request
-    ) {
+            @RequestBody @Valid ReservationServiceBookingRequest request) {
         return ResponseEntity.ok(service.bookService(reservationId, request));
     }
-    
+
     @DeleteMapping("/{serviceBookingId}")
     public ResponseEntity<Void> cancelServiceBooking(
-            @PathVariable UUID serviceBookingId
-    ) {
+            @PathVariable UUID serviceBookingId) {
         service.cancelServiceBooking(serviceBookingId);
         return ResponseEntity.noContent().build();
     }

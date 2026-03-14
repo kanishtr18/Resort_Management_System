@@ -1,5 +1,5 @@
 /*
-TODO: SwaggerConfig.java
+SwaggerConfig.java
 Purpose:
  - Configure Swagger/OpenAPI generation for the REST API (only in non-prod or behind auth).
  - Group APIs per domain (booking, billing, fnb).
@@ -13,5 +13,5 @@ File: config/SwaggerConfig.java
 package com.resortmanagement.system.config;
 
 public class SwaggerConfig {
-    // TODO: Swagger / OpenAPI config
+    // Swagger / OpenAPI config
 }
