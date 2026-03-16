@@ -34,6 +34,9 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
+    // FIX: Was "ROLE_" + role.name() = "ROLE_EMPLOYEE"
+    // SecurityConfig uses hasAuthority("EMPLOYEE") which is exact-match — never matched "ROLE_EMPLOYEE" → always 403
+    // Now returns plain "EMPLOYEE" / "ADMIN" / "GUEST" to match hasAuthority() exactly
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
