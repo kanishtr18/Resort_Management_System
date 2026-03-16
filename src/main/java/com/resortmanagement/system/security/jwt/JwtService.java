@@ -1,26 +1,32 @@
 package com.resortmanagement.system.security.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
 
     @Value("${application.security.jwt.secret-key:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}")
     private String secretKey;
-    
+
     @Value("${application.security.jwt.expiration:86400000}")
     private long jwtExpiration;
 
@@ -37,13 +43,22 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
+    // FIX: Embed roles into the JWT so the token is self-contained and inspectable at jwt.io
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+        List<String> roles = userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        Map<String, Object> claims = new HashMap<>(extraClaims);
+        claims.put("roles", roles);
+
+        return buildToken(claims, userDetails, jwtExpiration);
     }
 
+    // Uses jjwt 0.11.x API (setClaims, setSubject, setIssuedAt, setExpiration, signWith)
     private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
-        return Jwts
-                .builder()
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -52,9 +67,14 @@ public class JwtService {
                 .compact();
     }
 
+    // FIX: Wrapped in try/catch — a malformed or expired token was causing unhandled exceptions → 500
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        try {
+            final String username = extractUsername(token);
+            return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        } catch (ExpiredJwtException | MalformedJwtException | SignatureException e) {
+            return false;
+        }
     }
 
     private boolean isTokenExpired(String token) {
@@ -65,9 +85,9 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    // Uses jjwt 0.11.x API (parserBuilder, setSigningKey, parseClaimsJws)
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)

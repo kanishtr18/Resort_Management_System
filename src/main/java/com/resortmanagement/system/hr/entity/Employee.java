@@ -1,5 +1,13 @@
 package com.resortmanagement.system.hr.entity;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.resortmanagement.system.common.audit.AuditableSoftDeletable;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,23 +15,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.UUID;
-
-import com.resortmanagement.system.common.audit.AuditableSoftDeletable;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-import java.util.List;
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "employees")
@@ -59,7 +58,7 @@ public class Employee extends AuditableSoftDeletable {
 
     @Column
     private String phone;
-
+    
     @Column(nullable = false)
     private String credentialsHash;
 

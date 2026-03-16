@@ -22,4 +22,6 @@ public class RoomTypeCreateRequest {
     private Integer maxOccupancy;
 
     private String amenitiesSummary;
+
+    private Integer totalKeys;
 }
