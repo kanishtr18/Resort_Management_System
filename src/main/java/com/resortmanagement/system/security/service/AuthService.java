@@ -1,13 +1,10 @@
 package com.resortmanagement.system.security.service;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.resortmanagement.system.common.enums.GuestType;
 import com.resortmanagement.system.common.exception.ApplicationException;
 import com.resortmanagement.system.common.guest.Guest;
-import com.resortmanagement.system.common.guest.GuestRepository;
+import com.resortmanagement.system.common.guest.GuestService;
 import com.resortmanagement.system.hr.dto.EmployeeRoleDTO;
 import com.resortmanagement.system.hr.dto.employee.EmployeeRequest;
 import com.resortmanagement.system.hr.entity.Employee.EmployeeStatus;
 import com.resortmanagement.system.hr.repository.RoleRepository;
 import com.resortmanagement.system.hr.service.EmployeeRoleService;
 import com.resortmanagement.system.hr.service.EmployeeService;
-import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberRequest;
-import com.resortmanagement.system.marketing.entity.LoyaltyMember;
-import com.resortmanagement.system.marketing.entity.LoyaltyMember.MemberStatus;
-import com.resortmanagement.system.marketing.mapper.LoyaltyMemberMapper;
-import com.resortmanagement.system.marketing.repository.LoyaltyMemberRepository;
 import com.resortmanagement.system.security.dto.AuthRequest;
 import com.resortmanagement.system.security.dto.AuthResponse;
 import com.resortmanagement.system.security.dto.SignUpRequest;
@@ -41,17 +33,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final LoyaltyMemberRepository loyaltyMemberRepository;
-
     private final UserRepository userRepository;
-    private final GuestRepository guestRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    // FIX: Was "EmployeeService" (capital E) — Java variable names must start lowercase
     private final EmployeeService employeeService;
     private final EmployeeRoleService employeeRoleService;
     private final RoleRepository roleRepository;
+    private final GuestService guestService;
 
     @Transactional
     public AuthResponse signup(SignUpRequest request) {
@@ -97,10 +86,6 @@ public class AuthService {
 
         } else if (request.getRole() == Role.GUEST) {
 
-            if (guestRepository.existsByEmail(request.getEmail())) {
-                throw new ApplicationException("Guest with email already exists");
-            }
-
             Guest guest = Guest.builder()
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
@@ -111,23 +96,8 @@ public class AuthService {
                     .address(request.getAddress())
                     .dob(request.getDob())
                     .build();
-
-            LoyaltyMemberRequest loyaltyMemberDto =
-                    LoyaltyMemberRequest.builder()
-                            .tier("BRONZE")
-                            .pointsBalance(BigDecimal.ZERO)
-                            .enrolledAt(Instant.now())
-                            .status(MemberStatus.ACTIVE)
-                            .build();
-
-            LoyaltyMember loyaltyMember =
-                new LoyaltyMemberMapper().toEntity(loyaltyMemberDto, guest);
-
-            loyaltyMemberRepository.save(loyaltyMember);
-
-            guest.setLoyaltyMember(loyaltyMember);
-
-            guestRepository.save(guest);
+            
+            guestService.createGuest(guest);
         }
 
         var jwtToken = jwtService.generateToken(user);

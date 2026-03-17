@@ -1,5 +1,6 @@
 package com.resortmanagement.system.room.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -31,6 +32,10 @@ public class RoomAmenityService {
         this.amenityRepo = amenityRepo;
     }
 
+    public List<RoomAmenityResponse> getAll() {
+        return roomAmenityRepo.findAll().stream().map(RoomAmenityMapper::toResponse).toList();
+    }
+    
     public RoomAmenityResponse create(RoomAmenityCreateRequest request) {
 
         Room room = roomRepo.findById(request.getRoomId())

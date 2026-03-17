@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.resortmanagement.system.security.enums.Role;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -43,8 +44,9 @@ public class SignUpRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
 
-    // FIX: Removed unused "import java.util.Date" that was here before
     private Integer age;
 
+    // Only for Employees
+    @Nullable
     private String department;
 }

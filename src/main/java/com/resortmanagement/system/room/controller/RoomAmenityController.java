@@ -1,5 +1,6 @@
 package com.resortmanagement.system.room.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class RoomAmenityController {
         this.service = service;
     }
 
+    @GetMapping
+    public List<RoomAmenityResponse> getAll(){
+        return service.getAll();
+    }
+    
     @PostMapping
     public RoomAmenityResponse create(@RequestBody RoomAmenityCreateRequest request) {
         return service.create(request);
