@@ -3,6 +3,7 @@ package com.resortmanagement.system.security.dto;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.resortmanagement.system.hr.entity.Employee;
 import com.resortmanagement.system.security.enums.Role;
 
 import jakarta.annotation.Nullable;
@@ -49,4 +50,11 @@ public class SignUpRequest {
     // Only for Employees
     @Nullable
     private String department;
+
+    @Nullable
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate hireDate;
+
+    @Nullable
+    private Employee.EmployeeStatus status;
 }

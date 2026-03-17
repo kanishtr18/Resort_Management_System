@@ -15,7 +15,6 @@ import com.resortmanagement.system.common.guest.Guest;
 import com.resortmanagement.system.common.guest.GuestService;
 import com.resortmanagement.system.hr.dto.EmployeeRoleDTO;
 import com.resortmanagement.system.hr.dto.employee.EmployeeRequest;
-import com.resortmanagement.system.hr.entity.Employee.EmployeeStatus;
 import com.resortmanagement.system.hr.repository.RoleRepository;
 import com.resortmanagement.system.hr.service.EmployeeRoleService;
 import com.resortmanagement.system.hr.service.EmployeeService;
@@ -60,16 +59,16 @@ public class AuthService {
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
                     .email(request.getEmail())
-                    .hireDate(LocalDate.now())
+                    .hireDate(request.getHireDate())
                     .phone(request.getPhone())
-                    .status(EmployeeStatus.ACTIVE)
+                    .status(request.getStatus())
                     .build();
             // FIX: Was calling "EmployeeService.save()" — now correctly calls "employeeService.save()"
             var savedEmployee = employeeService.save(employee);
 
             if (request.getDepartment() != null) {
                 var role = roleRepository.findByName(
-                    request.getRole().name()
+                    request.getDepartment()
                 ).orElseThrow(
                     () -> new ApplicationException("Role not found")
                 );
