@@ -1,6 +1,7 @@
 package com.resortmanagement.system.hr.service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,8 +29,10 @@ public class RoleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RoleResponse> findAll(Pageable pageable) {
-        return repository.findByDeletedFalse(pageable).map(mapper::toResponse);
+    public List<RoleResponse> findAll() {
+        return repository.findByDeletedFalse().stream()
+            .map(mapper::toResponse)
+            .toList();
     }
 
     @Transactional(readOnly = true)

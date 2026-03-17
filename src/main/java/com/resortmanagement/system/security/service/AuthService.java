@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,11 @@ import com.resortmanagement.system.common.enums.GuestType;
 import com.resortmanagement.system.common.exception.ApplicationException;
 import com.resortmanagement.system.common.guest.Guest;
 import com.resortmanagement.system.common.guest.GuestRepository;
+import com.resortmanagement.system.hr.dto.EmployeeRoleDTO;
 import com.resortmanagement.system.hr.dto.employee.EmployeeRequest;
 import com.resortmanagement.system.hr.entity.Employee.EmployeeStatus;
+import com.resortmanagement.system.hr.repository.RoleRepository;
+import com.resortmanagement.system.hr.service.EmployeeRoleService;
 import com.resortmanagement.system.hr.service.EmployeeService;
 import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberRequest;
 import com.resortmanagement.system.marketing.entity.LoyaltyMember;
@@ -46,15 +50,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     // FIX: Was "EmployeeService" (capital E) — Java variable names must start lowercase
     private final EmployeeService employeeService;
+    private final EmployeeRoleService employeeRoleService;
+    private final RoleRepository roleRepository;
 
     @Transactional
     public AuthResponse signup(SignUpRequest request) {
-        // FIX: No duplicate check existed — duplicate email caused a DataIntegrityViolationException (500)
-        if (userRepository.findByEmailIgnoreCase(request.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("An account with this email already exists.");
-        }
-
-        // FIX: No null role guard — null role caused NullPointerException in the if-check below
         if (request.getRole() == null) {
             throw new IllegalArgumentException("Role must be specified: GUEST, EMPLOYEE, or ADMIN.");
         }
@@ -76,7 +76,24 @@ public class AuthService {
                     .status(EmployeeStatus.ACTIVE)
                     .build();
             // FIX: Was calling "EmployeeService.save()" — now correctly calls "employeeService.save()"
-            employeeService.save(employee);
+            var savedEmployee = employeeService.save(employee);
+
+            if (request.getDepartment() != null) {
+                var role = roleRepository.findByName(
+                    request.getRole().name()
+                ).orElseThrow(
+                    () -> new ApplicationException("Role not found")
+                );
+                EmployeeRoleDTO employeeRoleDto = new EmployeeRoleDTO(
+                    savedEmployee.getId(),
+                    savedEmployee.getFirstName() + " " + savedEmployee.getLastName(),
+                    role.getId(),
+                    request.getDepartment(),
+                    LocalDate.now(),
+                    null
+                );
+                employeeRoleService.save(employeeRoleDto);
+            }
 
         } else if (request.getRole() == Role.GUEST) {
 

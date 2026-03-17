@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeRoleDTO {
-    private UUID id;
     private UUID employeeId;
     private String employeeName;
     private UUID roleId;

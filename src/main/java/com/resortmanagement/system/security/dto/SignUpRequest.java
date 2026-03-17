@@ -45,4 +45,6 @@ public class SignUpRequest {
 
     // FIX: Removed unused "import java.util.Date" that was here before
     private Integer age;
+
+    private String department;
 }

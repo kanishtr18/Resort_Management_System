@@ -1,5 +1,6 @@
 package com.resortmanagement.system.hr.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -23,8 +24,8 @@ public class RoleController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<RoleResponse>> getAllRoles(Pageable pageable) {
-        return ResponseEntity.ok(service.findAll(pageable));
+    public ResponseEntity<List<RoleResponse>> getAllRoles() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")

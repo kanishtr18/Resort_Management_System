@@ -99,7 +99,6 @@ public class EmployeeRoleService {
     // Simple DTO mapping
     private EmployeeRoleDTO toDTO(EmployeeRole entity) {
         EmployeeRoleDTO dto = new EmployeeRoleDTO();
-        dto.setId(entity.getId());
         dto.setEmployeeId(entity.getEmployee() != null ? entity.getEmployee().getId() : null);
         dto.setRoleId(entity.getRole() != null ? entity.getRole().getId() : null);
         dto.setAssignedDate(entity.getAssignedDate());
