@@ -13,7 +13,7 @@ import com.resortmanagement.system.marketing.dto.promotion.PromotionResponse;
 import com.resortmanagement.system.marketing.service.PromotionService;
 
 @RestController
-@RequestMapping("/api/promotions")
+@RequestMapping("/api/marketing/promotions")
 public class PromotionController {
 
     private final PromotionService service;

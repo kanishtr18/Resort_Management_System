@@ -1,11 +1,10 @@
 package com.resortmanagement.system.marketing.service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +34,8 @@ public class LoyaltyMemberService {
     }
 
     @Transactional(readOnly = true)
-    public Page<LoyaltyMemberResponse> findAll(Pageable pageable) {
-        return repository.findByDeletedFalse(pageable).map(mapper::toResponse);
+    public List<LoyaltyMemberResponse> findAll() {
+        return repository.findByDeletedFalse().stream().map(mapper::toResponse).toList();
     }
 
     @Transactional(readOnly = true)
