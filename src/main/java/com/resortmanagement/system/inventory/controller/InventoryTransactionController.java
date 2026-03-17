@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.resortmanagement.system.inventory.service.InventoryTransactionService;
 
 @RestController
-@RequestMapping("/api/v1/inventory/transactions")
+@RequestMapping("/api/inventory/transactions")
 public class InventoryTransactionController {
 
     private final InventoryTransactionService service;
@@ -22,11 +22,13 @@ public class InventoryTransactionController {
 
     /**
      * View inventory transactions
-     * Optional filter: itemId (Not implemented in service yet but kept for structure)
+     * Optional filter: itemId (Not implemented in service yet but kept for
+     * structure)
      */
     @GetMapping
     public ResponseEntity<List<com.resortmanagement.system.inventory.dto.response.InventoryTransactionResponse>> getAll() {
-        // Ignoring itemId filter for now as service refactor didn't include it fully or I missed it.
+        // Ignoring itemId filter for now as service refactor didn't include it fully or
+        // I missed it.
         // Returning findAll
         return ResponseEntity.ok(service.findAll());
     }

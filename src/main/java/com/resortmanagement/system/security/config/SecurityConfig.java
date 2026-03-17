@@ -72,14 +72,15 @@ public class SecurityConfig {
                                         "/api/amenities/**",
                                         "/api/amenities",
                                         "/api/maintenance/**",
-                                        "/api/v1/inventory/**",
-                                        "/api/v1/fnb/**",
+                                        "/api/inventory/**",
                                         "/api/fnb/**",
-                                        "/api/v1/rate-plans/**",
-                                        "/api/v1/rate-history/**",
-                                        "/api/v1/pricing/**",
+                                        "/api/rate-plans/**",
+                                        "/api/rate-history/**",
+                                        "/api/pricing/**",
                                         "/api/marketing/**",
-                                        "/api/communications/**"
+                                        "/api/communications/**",
+                                        "/api/guests/**",
+                                        "/api/guests"
                                 ).hasAnyAuthority("EMPLOYEE", "ADMIN")
 
                                 // GUEST + EMPLOYEE + ADMIN

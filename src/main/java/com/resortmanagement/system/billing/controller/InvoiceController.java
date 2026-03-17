@@ -34,7 +34,7 @@ import jakarta.validation.Valid;
  *  - POST /api/billing/invoices/{id}/issue - Issue invoice (DRAFT -> ISSUED)
  */
 @RestController
-@RequestMapping("/api/billing/invoices")
+@RequestMapping("/api/invoices")
 public class InvoiceController {
 
     private final InvoiceService service;

@@ -1,5 +1,7 @@
 package com.resortmanagement.system.security.service;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,12 +12,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.resortmanagement.system.common.enums.GuestType;
+import com.resortmanagement.system.common.exception.ApplicationException;
 import com.resortmanagement.system.common.guest.Guest;
 import com.resortmanagement.system.common.guest.GuestRepository;
 import com.resortmanagement.system.hr.dto.employee.EmployeeRequest;
 import com.resortmanagement.system.hr.entity.Employee.EmployeeStatus;
 import com.resortmanagement.system.hr.service.EmployeeService;
+import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberRequest;
 import com.resortmanagement.system.marketing.entity.LoyaltyMember;
+import com.resortmanagement.system.marketing.entity.LoyaltyMember.MemberStatus;
+import com.resortmanagement.system.marketing.mapper.LoyaltyMemberMapper;
+import com.resortmanagement.system.marketing.repository.LoyaltyMemberRepository;
 import com.resortmanagement.system.security.dto.AuthRequest;
 import com.resortmanagement.system.security.dto.AuthResponse;
 import com.resortmanagement.system.security.dto.SignUpRequest;
@@ -29,6 +36,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    private final LoyaltyMemberRepository loyaltyMemberRepository;
 
     private final UserRepository userRepository;
     private final GuestRepository guestRepository;
@@ -55,7 +64,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         if (request.getRole() == Role.EMPLOYEE || request.getRole() == Role.ADMIN) {
             var employee = EmployeeRequest.builder()
@@ -70,8 +79,12 @@ public class AuthService {
             employeeService.save(employee);
 
         } else if (request.getRole() == Role.GUEST) {
-            // NOTE: LoyaltyMember must have CascadeType.PERSIST on Guest.loyaltyMember for this to save correctly
-            var guest = Guest.builder()
+
+            if (guestRepository.existsByEmail(request.getEmail())) {
+                throw new ApplicationException("Guest with email already exists");
+            }
+
+            Guest guest = Guest.builder()
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
                     .email(request.getEmail())
@@ -79,9 +92,24 @@ public class AuthService {
                     .guestType(GuestType.fromAge(request.getAge()))
                     .phone(request.getPhone())
                     .address(request.getAddress())
-                    .loyaltyMember(new LoyaltyMember())
                     .dob(request.getDob())
                     .build();
+
+            LoyaltyMemberRequest loyaltyMemberDto =
+                    LoyaltyMemberRequest.builder()
+                            .tier("BRONZE")
+                            .pointsBalance(BigDecimal.ZERO)
+                            .enrolledAt(Instant.now())
+                            .status(MemberStatus.ACTIVE)
+                            .build();
+
+            LoyaltyMember loyaltyMember =
+                new LoyaltyMemberMapper().toEntity(loyaltyMemberDto, guest);
+
+            loyaltyMemberRepository.save(loyaltyMember);
+
+            guest.setLoyaltyMember(loyaltyMember);
+
             guestRepository.save(guest);
         }
 

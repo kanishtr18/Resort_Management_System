@@ -3,7 +3,7 @@ ReservationDailyRateController.java
 Purpose:
  - Endpoints for maintenance/inspection of daily rates (admin read-only), not general CRUD.
 Suggested endpoints:
- - GET /api/v1/reservations/{id}/daily-rates
+ - GET /api/reservations/{id}/daily-rates
 Responsibilities:
  - Query ReservationDailyRateService to return per-night breakdown for invoices and for UI display.
  - Ensure immutability: do not provide endpoint to modify snapshot rates (admin adjustments go via credits/adjustments).
@@ -37,8 +37,7 @@ public class ReservationDailyRateController {
 
     @GetMapping("/reservation/{reservationId}")
     public ResponseEntity<List<ReservationDailyRateResponse>> getDailyRates(
-            @PathVariable UUID reservationId
-    ) {
+            @PathVariable UUID reservationId) {
         return ResponseEntity.ok(service.getRates(reservationId));
     }
 }

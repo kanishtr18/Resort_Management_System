@@ -18,7 +18,7 @@ import com.resortmanagement.system.marketing.dto.PackageItemDTO;
 import com.resortmanagement.system.marketing.service.PackageItemService;
 
 @RestController
-@RequestMapping("/api/marketing/package_items")
+@RequestMapping("/api/package_items")
 public class PackageItemController {
 
     private final PackageItemService service;

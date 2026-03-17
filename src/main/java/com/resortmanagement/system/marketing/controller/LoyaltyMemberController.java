@@ -13,7 +13,7 @@ import com.resortmanagement.system.marketing.dto.loyaltymember.LoyaltyMemberResp
 import com.resortmanagement.system.marketing.service.LoyaltyMemberService;
 
 @RestController
-@RequestMapping("/api/marketing/loyalty-members")
+@RequestMapping("/api/loyalty")
 public class LoyaltyMemberController {
 
     private final LoyaltyMemberService service;

@@ -3,10 +3,10 @@ GuestController.java
 Purpose:
  - CRUD endpoints for guests (create, read, update). Not for booking operations.
 Endpoints:
- - POST /api/v1/guests
- - GET /api/v1/guests/{id}
- - PUT /api/v1/guests/{id}
- - DELETE /api/v1/guests/{id} (soft delete)
+ - POST /api/guests
+ - GET /api/guests/{id}
+ - PUT /api/guests/{id}
+ - DELETE /api/guests/{id} (soft delete)
 Responsibilities:
  - Validate input DTOs, avoid returning entity.
  - Use GuestService for operations.
@@ -16,6 +16,7 @@ File: common/Guest/GuestController.java
 
 package com.resortmanagement.system.common.guest;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -30,10 +31,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.resortmanagement.system.common.guest.dto.guestResponseDto;
+
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/guests")
+@RequestMapping("/api/guests")
 public class GuestController {
 
     private final GuestService guestService;
@@ -41,12 +44,18 @@ public class GuestController {
     public GuestController(GuestService guestService) {
         this.guestService = guestService;
     }
-    
+
     // CREATE
     @PostMapping
     public ResponseEntity<Guest> createGuest(@Valid @RequestBody Guest guest) {
         Guest created = guestService.createGuest(guest);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    // READ
+    @GetMapping
+    public ResponseEntity<List<guestResponseDto>> getAllGuests() {
+        return ResponseEntity.ok(guestService.getAllGuests());
     }
 
     // READ

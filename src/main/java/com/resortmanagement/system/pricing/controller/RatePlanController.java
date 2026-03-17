@@ -3,8 +3,8 @@ RatePlanController.java
 Purpose:
  - CRUD for RatePlan.
 Endpoints:
- - POST /api/v1/rate-plans
- - GET /api/v1/rate-plans/{id}
+ - POST /api/rate-plans
+ - GET /api/rate-plans/{id}
 Responsibilities:
  - RatePlan defines cancellation policy, base price, min/max stay, refundable flag.
 File: pricing/controller/RatePlanController.java
@@ -32,7 +32,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/rate-plans")
+@RequestMapping("/api/rate-plans")
 @RequiredArgsConstructor
 public class RatePlanController {
 
@@ -43,14 +43,24 @@ public class RatePlanController {
         return service.create(request);
     }
 
+    @GetMapping
+    public List<RatePlanResponse> getAll() {
+        return service.getAllRatePlan();
+    }
+
+    @GetMapping("/{id}")
+    public RatePlanResponse get(@PathVariable UUID id) {
+        return service.getById(id);
+    }
+
     @PutMapping("/{id}")
     public RatePlanResponse update(@PathVariable UUID id,
             @RequestBody RatePlanUpdateRequest request) {
         return service.update(id, request);
     }
 
-    @GetMapping
-    public List<RatePlanSummaryResponse> list() {
-        return service.list();
+    @GetMapping("/summary")
+    public List<RatePlanSummaryResponse> getAllRatePlanSummary() {
+        return service.getAllRatePlanSummary();
     }
 }

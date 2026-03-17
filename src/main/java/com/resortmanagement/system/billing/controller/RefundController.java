@@ -33,7 +33,7 @@ import jakarta.validation.Valid;
  *  - POST /api/billing/refunds/{id}/process - Process refund (REQUESTED/PROCESSING -> SUCCESS/FAILED)
  */
 @RestController
-@RequestMapping("/api/billing/refunds")
+@RequestMapping("/api/refunds")
 public class RefundController {
 
     private final RefundService service;

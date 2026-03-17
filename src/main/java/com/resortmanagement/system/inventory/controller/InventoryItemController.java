@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.resortmanagement.system.inventory.service.InventoryItemService;
 
 @RestController
-@RequestMapping("/api/v1/inventory/items")
+@RequestMapping("/api/inventory/items")
 public class InventoryItemController {
 
     private final InventoryItemService service;
@@ -38,7 +38,8 @@ public class InventoryItemController {
      * Get inventory item by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<com.resortmanagement.system.inventory.dto.response.InventoryItemResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<com.resortmanagement.system.inventory.dto.response.InventoryItemResponse> getById(
+            @PathVariable UUID id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -53,7 +54,7 @@ public class InventoryItemController {
         com.resortmanagement.system.inventory.dto.response.InventoryItemResponse saved = service.create(request);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<com.resortmanagement.system.inventory.dto.response.InventoryItemResponse> update(
             @PathVariable UUID id,
@@ -82,4 +83,3 @@ public class InventoryItemController {
         return ResponseEntity.noContent().build();
     }
 }
-

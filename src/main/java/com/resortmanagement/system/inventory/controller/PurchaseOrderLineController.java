@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.resortmanagement.system.inventory.service.PurchaseOrderLineService;
 
 @RestController
-@RequestMapping("/api/v1/inventory/purchase-orders/{purchaseOrderId}/lines")
+@RequestMapping("/api/inventory/purchase-orders/{purchaseOrderId}/lines")
 public class PurchaseOrderLineController {
 
     private final PurchaseOrderLineService service;
@@ -26,7 +26,6 @@ public class PurchaseOrderLineController {
             @PathVariable UUID purchaseOrderId) {
 
         return ResponseEntity.ok(
-                service.findByPurchaseOrderId(purchaseOrderId)
-        );
+                service.findByPurchaseOrderId(purchaseOrderId));
     }
 }

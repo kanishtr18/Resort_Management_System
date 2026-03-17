@@ -14,10 +14,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,6 +35,52 @@ public class JwtService {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    /**
+     * Return roles from the JWT as a list of strings.
+     * Handles both:
+     *  - "roles": "ADMIN"
+     *  - "roles": ["ADMIN","EMPLOYEE"]
+     *  - older "role": "ADMIN"
+     */
+    // @SuppressWarnings("unchecked")
+    public List<String> extractRoles(String token) {
+        try {
+            final Claims claims = extractAllClaims(token);
+            Object rolesObj = claims.get("roles");
+
+            // backward-compat: single "role" key
+            if (rolesObj == null) {
+                Object single = claims.get("role");
+                if (single instanceof String) {
+                    return List.of(((String) single));
+                }
+                return Collections.emptyList();
+            }
+
+            // If it's a String -> single role
+            if (rolesObj instanceof String) {
+                return List.of((String) rolesObj);
+            }
+
+            // If it's a collection/array -> convert to List<String>
+            if (rolesObj instanceof List) {
+                List<?> raw = (List<?>) rolesObj;
+                List<String> roles = new ArrayList<>();
+                for (Object o : raw) {
+                    if (o != null) roles.add(Objects.toString(o));
+                }
+                return roles;
+            }
+
+            // Fallback
+            return Collections.emptyList();
+
+        } catch (ExpiredJwtException | MalformedJwtException | SignatureException ex) {
+            // treat invalid/expired token as no roles (higher-level filter already handles expiry)
+            return Collections.emptyList();
+        }
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

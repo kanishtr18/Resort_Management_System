@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.resortmanagement.system.inventory.service.PurchaseOrderService;
 
 @RestController
-@RequestMapping("/api/v1/inventory/purchase-orders")
+@RequestMapping("/api/inventory/purchase-orders")
 public class PurchaseOrderController {
 
     private final PurchaseOrderService service;
@@ -31,7 +31,8 @@ public class PurchaseOrderController {
      * View purchase order by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<com.resortmanagement.system.inventory.dto.response.PurchaseOrderResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<com.resortmanagement.system.inventory.dto.response.PurchaseOrderResponse> getById(
+            @PathVariable UUID id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -59,5 +60,3 @@ public class PurchaseOrderController {
         return ResponseEntity.ok().build();
     }
 }
-
-

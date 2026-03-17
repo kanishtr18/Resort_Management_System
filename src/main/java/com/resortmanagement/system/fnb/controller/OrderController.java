@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.resortmanagement.system.fnb.service.OrderService;
 
 @RestController
-@RequestMapping("/api/v1/fnb/orders")
+@RequestMapping("/api/fnb/orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -53,7 +53,7 @@ public class OrderController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    // Delete method? Order cancellation logic is complex (revert inventory). 
-    // Not implemented in service yet. 
+    // Delete method? Order cancellation logic is complex (revert inventory).
+    // Not implemented in service yet.
     // I won't expose delete for now, or returns NotAllowed.
 }

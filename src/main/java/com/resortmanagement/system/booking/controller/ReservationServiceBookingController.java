@@ -3,8 +3,8 @@ ReservationServiceBookingController.java
 Purpose:
  - Expose endpoints for services (staff-delivered) associated to reservations (spa, shuttle).
 Endpoints:
- - POST /api/v1/reservations/{id}/services -> schedule a service
- - GET /api/v1/reservations/{id}/services
+ - POST /api/reservations/{id}/services -> schedule a service
+ - GET /api/reservations/{id}/services
 Responsibilities:
  - Validate service availability with ServiceItemService.
  - Create ReservationServiceBooking entries via ReservationServiceBookingService (transactional).

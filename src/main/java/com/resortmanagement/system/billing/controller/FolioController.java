@@ -35,7 +35,7 @@ import jakarta.validation.Valid;
  *  - POST /api/billing/folios/{id}/void - Void folio (for incorrect/cancelled folios)
  */
 @RestController
-@RequestMapping("/api/billing/folios")
+@RequestMapping("/api/folios")
 public class FolioController {
 
     private final FolioService service;

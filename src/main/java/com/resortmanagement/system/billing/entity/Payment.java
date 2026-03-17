@@ -87,7 +87,7 @@ public class Payment extends Auditable {
     private PaymentStatus status = PaymentStatus.PENDING;
 
     @Lob
-    @Column(name = "provider_response", columnDefinition="TEXT")
+    @Column(name = "provider_response")
     private String providerResponse;
 
     @Column(name = "processed_at")

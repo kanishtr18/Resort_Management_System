@@ -33,7 +33,7 @@ import jakarta.validation.Valid;
  *  - POST /api/billing/payments/{id}/process - Process payment (PENDING -> SUCCESS/FAILED)
  */
 @RestController
-@RequestMapping("/api/billing/payments")
+@RequestMapping("/api/payments")
 public class PaymentController {
 
     private final PaymentService service;

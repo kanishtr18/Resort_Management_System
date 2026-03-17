@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/fnb/menu-items")
+@RequestMapping("/api/fnb/menu-items")
 public class MenuItemController {
 
     private final com.resortmanagement.system.fnb.service.MenuItemService service;
@@ -40,7 +40,8 @@ public class MenuItemController {
      * Get menu item by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<com.resortmanagement.system.fnb.dto.response.MenuItemResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<com.resortmanagement.system.fnb.dto.response.MenuItemResponse> getById(
+            @PathVariable UUID id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -55,7 +56,7 @@ public class MenuItemController {
         com.resortmanagement.system.fnb.dto.response.MenuItemResponse saved = service.create(request);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
-    
+
     /**
      * Update a menu item
      */

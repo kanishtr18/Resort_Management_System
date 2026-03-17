@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/pricing")
+@RequestMapping("/api/pricing")
 @RequiredArgsConstructor
 public class PricingQuoteController {
 
@@ -24,4 +24,3 @@ public class PricingQuoteController {
         return service.calculate(request);
     }
 }
-

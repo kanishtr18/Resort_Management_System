@@ -3,8 +3,8 @@ HousekeepingTaskController.java
 Purpose:
  - Manage housekeeping tasks: schedule cleanings, mark completed.
 Endpoints:
- - POST /api/v1/housekeeping/tasks
- - GET /api/v1/rooms/{roomId}/housekeeping
+ - POST /api/housekeeping/tasks
+ - GET /api/rooms/{roomId}/housekeeping
 Responsibilities:
  - Create tasks when reservation checks out; assign staff; update room status.
 File: room/controller/HousekeepingTaskController.java

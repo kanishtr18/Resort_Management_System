@@ -35,7 +35,7 @@ import jakarta.validation.Valid;
  *  - DELETE /api/billing/ledger/{id} - Delete ledger account (zero balance only)
  */
 @RestController
-@RequestMapping("/api/billing/ledger")
+@RequestMapping("/api/ledger")
 public class AccountLedgerController {
 
     private final AccountLedgerService service;

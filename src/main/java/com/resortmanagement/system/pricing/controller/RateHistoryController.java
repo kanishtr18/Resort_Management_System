@@ -3,8 +3,8 @@
 Purpose:
  - Manage seasonal rate overrides associated to RatePlan.
 Endpoints:
- - POST /api/v1/rate-plans/{id}/history
- - GET /api/v1/rate-plans/{id}/history
+ - POST /api/rate-plans/{id}/history
+ - GET /api/rate-plans/{id}/history
 Responsibilities:
  - Ensure RateHistory date ranges are non-overlapping and validate rules.
 File: pricing/controller/RateHistoryController.java
@@ -26,7 +26,7 @@ import com.resortmanagement.system.pricing.service.RateHistoryService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/rate-history")
+@RequestMapping("/api/rate-history")
 @RequiredArgsConstructor
 public class RateHistoryController {
 
@@ -34,11 +34,10 @@ public class RateHistoryController {
 
     @PostMapping("/{ratePlanId}")
     public RateHistoryResponse create(@PathVariable UUID ratePlanId,
-                                      @RequestParam Double price,
-                                      @RequestParam LocalDate start,
-                                      @RequestParam LocalDate end,
-                                      @RequestParam(required = false) String seasonName) {
+            @RequestParam Double price,
+            @RequestParam LocalDate start,
+            @RequestParam LocalDate end,
+            @RequestParam(required = false) String seasonName) {
         return service.create(ratePlanId, price, start, end, seasonName);
     }
 }
-

@@ -3,9 +3,9 @@ MenuController.java
 Purpose:
  - Manage menus and menu grouping (Breakfast, Bar).
 Endpoints:
- - POST /api/v1/menus
- - GET /api/v1/menus
- - GET /api/v1/menus/{id}
+ - POST /api/menus
+ - GET /api/menus
+ - GET /api/menus/{id}
 Responsibilities:
  - Minimal logic; MenuService handles creation and item assignment.
 File: fnb/controller/MenuController.java
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.resortmanagement.system.fnb.service.MenuService;
 
 @RestController
-@RequestMapping("/api/v1/fnb/menus")
+@RequestMapping("/api/fnb/menus")
 public class MenuController {
 
     private final MenuService menuService;

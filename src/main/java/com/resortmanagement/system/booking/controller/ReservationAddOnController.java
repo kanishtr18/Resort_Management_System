@@ -3,9 +3,9 @@ ReservationAddOnController.java
 Purpose:
  - Manage add-ons attached to reservations (e.g., breakfast, airport pickup).
 Endpoints:
- - POST /api/v1/reservations/{id}/addons -> add an add-on
- - GET /api/v1/reservations/{id}/addons
- - DELETE /api/v1/reservations/{id}/addons/{addonId}
+ - POST /api/reservations/{id}/addons -> add an add-on
+ - GET /api/reservations/{id}/addons
+ - DELETE /api/reservations/{id}/addons/{addonId}
 Responsibilities:
  - Use ReservationAddOnService (transactional).
  - Validate pricing and apply to folio.
@@ -45,15 +45,13 @@ public class ReservationAddOnController {
     @PostMapping
     public ResponseEntity<ReservationAddOnResponse> addAddOn(
             @PathVariable UUID reservationId,
-            @RequestBody @Valid ReservationAddOnRequest request
-    ) {
+            @RequestBody @Valid ReservationAddOnRequest request) {
         return ResponseEntity.ok(service.addAddOn(reservationId, request));
     }
 
     @DeleteMapping("/{addOnId}")
     public ResponseEntity<Void> removeAddOn(
-            @PathVariable UUID addOnId
-    ) {
+            @PathVariable UUID addOnId) {
         service.removeAddOn(addOnId);
         return ResponseEntity.noContent().build();
     }

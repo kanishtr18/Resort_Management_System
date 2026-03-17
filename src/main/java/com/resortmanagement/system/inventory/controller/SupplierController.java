@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.resortmanagement.system.inventory.service.SupplierService;
 
 @RestController
-@RequestMapping("/api/v1/inventory/suppliers")
+@RequestMapping("/api/inventory/suppliers")
 public class SupplierController {
 
     private final SupplierService service;
@@ -26,7 +26,7 @@ public class SupplierController {
     public ResponseEntity<List<com.resortmanagement.system.inventory.dto.response.SupplierResponse>> getAll(
             @RequestParam(required = false, defaultValue = "false") boolean activeOnly) {
         if (activeOnly) {
-             return ResponseEntity.ok(service.findAllActive());
+            return ResponseEntity.ok(service.findAllActive());
         }
         return ResponseEntity.ok(service.findAll());
     }
@@ -35,7 +35,8 @@ public class SupplierController {
      * Get supplier by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<com.resortmanagement.system.inventory.dto.response.SupplierResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<com.resortmanagement.system.inventory.dto.response.SupplierResponse> getById(
+            @PathVariable UUID id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -70,4 +71,3 @@ public class SupplierController {
         return ResponseEntity.noContent().build();
     }
 }
-

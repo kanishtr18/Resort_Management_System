@@ -24,6 +24,17 @@ public class RatePlanService {
     private final RatePlanRepository repository;
     private final RoomTypeRepository roomTypeRepository;
     
+    public List<RatePlanResponse> getAllRatePlan() {
+        return repository.findByDeletedFalse().stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public RatePlanResponse getById(UUID id) {
+        return toResponse(repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("RatePlan not found")));
+    }
+    
     public RatePlanResponse create(RatePlanCreateRequest request) {
 
         RatePlan plan = new RatePlan();
@@ -55,7 +66,7 @@ public class RatePlanService {
     }
 
     @Transactional(readOnly = true)
-    public List<RatePlanSummaryResponse> list() {
+    public List<RatePlanSummaryResponse> getAllRatePlanSummary() {
         return repository.findByDeletedFalse().stream()
                 .map(p -> RatePlanSummaryResponse.builder()
                         .id(p.getId())

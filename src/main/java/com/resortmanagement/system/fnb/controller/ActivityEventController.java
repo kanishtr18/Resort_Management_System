@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.resortmanagement.system.fnb.service.ActivityEventService;
 
 @RestController
-@RequestMapping("/api/v1/fnb/activity-events")
+@RequestMapping("/api/fnb/activity-events")
 public class ActivityEventController {
 
     private final ActivityEventService service;
@@ -42,7 +42,8 @@ public class ActivityEventController {
      * Get activity event by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<com.resortmanagement.system.fnb.dto.response.ActivityEventResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<com.resortmanagement.system.fnb.dto.response.ActivityEventResponse> getById(
+            @PathVariable UUID id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -57,7 +58,7 @@ public class ActivityEventController {
         com.resortmanagement.system.fnb.dto.response.ActivityEventResponse saved = service.create(request);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
-    
+
     /**
      * Update an activity event
      */

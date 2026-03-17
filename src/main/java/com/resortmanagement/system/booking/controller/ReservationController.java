@@ -3,12 +3,12 @@ ReservationController.java
 Purpose:
  - Core booking endpoints: create reservation, modify, confirm, cancel, checkin, checkout.
 Suggested endpoints:
- - POST /api/v1/reservations -> create reservation (CreateReservationRequest)
- - GET /api/v1/reservations/{id}
- - POST /api/v1/reservations/{id}/confirm
- - POST /api/v1/reservations/{id}/cancel
- - POST /api/v1/reservations/{id}/checkin
- - POST /api/v1/reservations/{id}/checkout
+ - POST /api/reservations -> create reservation (CreateReservationRequest)
+ - GET /api/reservations/{id}
+ - POST /api/reservations/{id}/confirm
+ - POST /api/reservations/{id}/cancel
+ - POST /api/reservations/{id}/checkin
+ - POST /api/reservations/{id}/checkout
 Responsibilities:
  - Validate request DTOs and call ReservationService.
  - Return ReservationResponse DTO (never entity).
@@ -55,30 +55,25 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<ReservationDetailResponse> createReservation(
-        @RequestBody @Valid ReservationCreateRequest request
-    ) {
+            @RequestBody @Valid ReservationCreateRequest request) {
         return ResponseEntity.ok(service.createReservation(request));
     }
 
-
     @GetMapping
-    public ResponseEntity<List<ReservationResponse>> listReservations(
-    ) {
+    public ResponseEntity<List<ReservationResponse>> listReservations() {
         return ResponseEntity.ok(service.listReservations());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ReservationDetailResponse> getReservationDetail(
-        @PathVariable UUID id
-    ) {
+            @PathVariable UUID id) {
         return ResponseEntity.ok(service.getReservation(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReservationUpdateRequest> updateReservation(
-        @PathVariable UUID id, 
-        @RequestBody @Valid ReservationUpdateRequest request
-    ) {
+            @PathVariable UUID id,
+            @RequestBody @Valid ReservationUpdateRequest request) {
         service.updateReservation(id, request);
         return ResponseEntity.ok(request);
     }

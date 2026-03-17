@@ -65,9 +65,9 @@ Purpose:
  - Controller should be thin: validate DTOs, call AccountLedgerService.
 
 Endpoints (suggested):
- - GET /api/v1/billing/ledgers -> list ledgers (pageable)
- - GET /api/v1/billing/ledgers/{id} -> get ledger detail
- - POST /api/v1/billing/ledgers/adjust -> admin-only adjustment (body: ledgerId, amount, reason)
+ - GET /api/billing/ledgers -> list ledgers (pageable)
+ - GET /api/billing/ledgers/{id} -> get ledger detail
+ - POST /api/billing/ledgers/adjust -> admin-only adjustment (body: ledgerId, amount, reason)
 
 Responsibilities:
  - Use DTOs for input/output (AccountLedgerRequest, AccountLedgerResponse).
@@ -115,10 +115,10 @@ FolioController.java
 Purpose:
  - Expose folio operations for a reservation: list folios, create folio, attach items, close folio.
 Suggested endpoints:
- - GET /api/v1/reservations/{reservationId}/folios
- - POST /api/v1/reservations/{reservationId}/folios  (create main folio or additional folio)
- - POST /api/v1/folios/{folioId}/assign-item  (assign Order/Service/Addon to folio)
- - POST /api/v1/folios/{folioId}/invoice  (generate invoice for folio)
+ - GET /api/reservations/{reservationId}/folios
+ - POST /api/reservations/{reservationId}/folios  (create main folio or additional folio)
+ - POST /api/folios/{folioId}/assign-item  (assign Order/Service/Addon to folio)
+ - POST /api/folios/{folioId}/invoice  (generate invoice for folio)
 
 Responsibilities:
  - Validate guest/reservation existence before invoking service.
@@ -157,10 +157,10 @@ InvoiceController.java
 Purpose:
  - REST endpoints for invoice life cycle: create invoice from folio, get invoice, list invoices, mark paid/refund.
 Suggested endpoints:
- - POST /api/v1/folios/{folioId}/invoices -> create invoice
- - GET /api/v1/invoices/{invoiceId}
- - POST /api/v1/invoices/{invoiceId}/pay -> invoke PSP through PaymentService
- - POST /api/v1/invoices/{invoiceId}/refund -> create refund
+ - POST /api/folios/{folioId}/invoices -> create invoice
+ - GET /api/invoices/{invoiceId}
+ - POST /api/invoices/{invoiceId}/pay -> invoke PSP through PaymentService
+ - POST /api/invoices/{invoiceId}/refund -> create refund
 
 Responsibilities:
  - Use DTOs: CreateInvoiceRequest, InvoiceResponse, PaymentRequest.
@@ -202,9 +202,9 @@ PaymentController.java
 Purpose:
  - Accept payment requests and forward to PaymentService; handle idempotency and webhooks.
 Endpoints:
- - POST /api/v1/invoices/{invoiceId}/pay -> client triggers payment
- - POST /api/v1/payments/webhook -> PSP webhook endpoint (idempotent)
- - GET /api/v1/payments/{paymentId}
+ - POST /api/invoices/{invoiceId}/pay -> client triggers payment
+ - POST /api/payments/webhook -> PSP webhook endpoint (idempotent)
+ - GET /api/payments/{paymentId}
 Responsibilities:
  - Use PaymentRequest DTO containing paymentMethod, token, amount, idempotencyKey.
  - Validate amounts match invoice outstanding.
@@ -244,8 +244,8 @@ RefundController.java
 Purpose:
  - Expose endpoints to create refunds against payments/invoices.
 Endpoints:
- - POST /api/v1/payments/{paymentId}/refund -> create refund request (amount, reason)
- - GET /api/v1/refunds/{refundId}
+ - POST /api/payments/{paymentId}/refund -> create refund request (amount, reason)
+ - GET /api/refunds/{refundId}
 Responsibilities:
  - Validate refund business rules (amount <= refundable).
  - Use RefundService (transaction) to create refund record, call PSP refund API, update Payment/Invoice statuses.

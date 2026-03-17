@@ -3,9 +3,9 @@ BookingGuestController.java
 Purpose:
  - CRUD endpoints for booking guest records (booking/occupant details).
 Endpoints:
- - POST /api/v1/reservations/{reservationId}/guests -> add guest to reservation
- - GET /api/v1/reservations/{reservationId}/guests -> list guests
- - DELETE /api/v1/reservations/{reservationId}/guests/{id} -> remove guest
+ - POST /api/reservations/{reservationId}/guests -> add guest to reservation
+ - GET /api/reservations/{reservationId}/guests -> list guests
+ - DELETE /api/reservations/{reservationId}/guests/{id} -> remove guest
 
 Responsibilities:
  - Validate booking occupancy limits against roomType.maxOccupancy.
@@ -40,8 +40,7 @@ public class BookingGuestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeGuestFromReservation(
-        @PathVariable UUID id
-    ) {
+            @PathVariable UUID id) {
         service.removeGuest(id);
         return ResponseEntity.noContent().build();
     }

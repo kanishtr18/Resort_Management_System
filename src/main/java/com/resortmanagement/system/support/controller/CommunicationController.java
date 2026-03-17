@@ -3,15 +3,14 @@ CommunicationController.java
 Purpose:
  - Log or send communications (email/SMS) to guests; store sent communications for audit.
 Endpoints:
- - POST /api/v1/communications/send -> send message (email/sms) and store record
- - GET /api/v1/communications?guestId=...
+ - POST /api/communications/send -> send message (email/sms) and store record
+ - GET /api/communications?guestId=...
 Responsibilities:
  - Use Integration module (email/SMS provider) to actually send messages.
  - Store communication in DB for audit trail (Communication entity).
 File: support/controller/CommunicationController.java
 */
 package com.resortmanagement.system.support.controller;
-
 
 import java.util.List;
 import java.util.UUID;

@@ -19,7 +19,7 @@ import com.resortmanagement.system.marketing.dto.packagedto.PackageResponse;
 import com.resortmanagement.system.marketing.service.PackageService;
 
 @RestController
-@RequestMapping("/api/marketing/packages")
+@RequestMapping("/api/packages")
 public class PackageController {
 
     private final PackageService service;
