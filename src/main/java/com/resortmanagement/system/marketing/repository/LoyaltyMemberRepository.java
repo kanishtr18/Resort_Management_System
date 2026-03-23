@@ -18,6 +18,4 @@ public interface LoyaltyMemberRepository
         // Find by guest ID with soft delete check
         Optional<LoyaltyMember> findByGuestIdAndDeletedFalse(UUID guestId);
 
-        // Find by ID with soft delete check
-        Optional<LoyaltyMember> findByIdAndDeletedFalse(UUID id);
 }
