@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
-import jakarta.validation.constraints.Future;
+import com.resortmanagement.system.common.enums.ActivityEventStatus;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -23,11 +24,11 @@ public class ActivityEventRequest {
     private String description;
 
     @NotNull(message = "Start time is required")
-    @Future(message = "Start time must be in the future")
+    // @Future(message = "Start time must be in the future")
     private Instant startTime;
 
     @NotNull(message = "End time is required")
-    @Future(message = "End time must be in the future")
+    // @Future(message = "End time must be in the future")
     private Instant endTime;
 
     @PositiveOrZero(message = "Capacity must be positive or zero")
@@ -40,4 +41,6 @@ public class ActivityEventRequest {
     @PositiveOrZero(message = "Price must be positive or zero")
     private BigDecimal price;
 
+    @NotNull(message = "Status is required")
+    private ActivityEventStatus status;
 }

@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuItemService {
@@ -40,9 +41,9 @@ public class MenuItemService {
     }
 
     public List<MenuItemResponse> findAll() {
-        return repository.findAll().stream()
-                .map(mapper::toResponse)
-                .collect(java.util.stream.Collectors.toList());
+    return repository.findByDeletedFalse().stream()
+            .map(mapper::toResponse)
+            .collect(Collectors.toList());
     }
 
     public Optional<MenuItemResponse> findById(UUID id) {
@@ -83,6 +84,7 @@ public class MenuItemService {
         return mapper.toResponse(repository.save(entity));
     }
 
+    @Transactional
     public com.resortmanagement.system.fnb.dto.response.MenuItemResponse update(UUID id, com.resortmanagement.system.fnb.dto.request.MenuItemRequest request) {
         MenuItem entity = repository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new RuntimeException("MenuItem not found: " + id));

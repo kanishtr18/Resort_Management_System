@@ -46,10 +46,11 @@ public class ReservationServiceBookingService {
             .orElseThrow(() -> new ApplicationException("Reservation not found"))
         );
 
+        var folio = folioService.findByReservationId(reservationId);
         booking.setFolio(
-            folioService.findByReservationId(reservationId) == null
-                ? folioService.createFolioForReservation(reservationId, reservation.getGuest().getId())
-                : folioService.findByReservationId(reservationId)
+            folio != null
+            ? folio
+            : folioService.createFolioForReservation(reservationId, reservation.getGuest().getId())
         );
         repository.save(booking);
         return ReservationServiceBookingMapper.toResponse(booking);

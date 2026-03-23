@@ -45,6 +45,15 @@ public class InventoryItemMapper {
         entity.setName(request.getName());
         entity.setReorderPoint(request.getReorderPoint());
         entity.setUnitCost(request.getUnitCost());
+
+        if (request.getQuantityOnHand() != null) {
+        entity.setQuantityOnHand(request.getQuantityOnHand());
+    }
+
+    // ✅ Only update reorderQty if explicitly provided
+    if (request.getReorderQty() != null) {
+        entity.setReorderQty(request.getReorderQty());
+    }
         // Sku/BaseUnit typically not changeable after creation due to hist/ref integ
     }
 }

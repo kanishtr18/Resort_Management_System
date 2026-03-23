@@ -13,5 +13,5 @@ public interface MenuItemRepository extends SoftDeleteRepository<MenuItem, UUID>
 
     @Query("select m from MenuItem m where m.deletedAt is null")
     List<MenuItem> findAllActive();
-
+    List<MenuItem> findByDeletedFalse();
 }

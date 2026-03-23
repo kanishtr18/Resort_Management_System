@@ -1,27 +1,12 @@
-/*
-CommunicationController.java
-Purpose:
- - Log or send communications (email/SMS) to guests; store sent communications for audit.
-Endpoints:
- - POST /api/communications/send -> send message (email/sms) and store record
- - GET /api/communications?guestId=...
-Responsibilities:
- - Use Integration module (email/SMS provider) to actually send messages.
- - Store communication in DB for audit trail (Communication entity).
-File: support/controller/CommunicationController.java
-*/
 package com.resortmanagement.system.support.controller;
 
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.resortmanagement.system.support.dto.request.CommunicationCreateRequest;
 import com.resortmanagement.system.support.dto.response.CommunicationResponse;
@@ -37,18 +22,23 @@ public class CommunicationController {
         this.service = service;
     }
 
-    @PostMapping
-    public CommunicationResponse create(@RequestBody CommunicationCreateRequest req) {
-        return service.create(req);
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('support:view', 'support:manage', 'ADMIN')")
+    public ResponseEntity<List<CommunicationResponse>> getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 
-    @GetMapping
-    public List<CommunicationResponse> getAll() {
-        return service.getAll();
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('support:manage', 'ADMIN')")
+    public ResponseEntity<CommunicationResponse> create(
+            @RequestBody CommunicationCreateRequest req) {
+        return new ResponseEntity<>(service.create(req), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
+    @PreAuthorize("hasAnyAuthority('support:manage', 'ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

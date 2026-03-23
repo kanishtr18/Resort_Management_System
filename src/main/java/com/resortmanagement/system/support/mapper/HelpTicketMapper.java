@@ -21,7 +21,7 @@ public class HelpTicketMapper {
         res.setDescription(entity.getDescription());
         res.setPriority(entity.getPriority());
         res.setStatus(entity.getStatus());
-        res.setAssignedTo(entity.getAssignedTo().getId());
+        res.setAssignedTo(entity.getAssignedTo() != null ? entity.getAssignedTo().getId() : null);
 
         if (entity.getGuest() != null)
             res.setGuestId(entity.getGuest().getId());

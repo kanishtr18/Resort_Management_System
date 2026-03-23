@@ -23,7 +23,7 @@ public class ActivityEventMapper {
         entity.setCapacity(request.getCapacity());
         entity.setInstructor(instructor);
         entity.setPrice(request.getPrice());
-        entity.setStatus(ActivityEventStatus.SCHEDULED);
+        entity.setStatus(request.getStatus());
         return entity;
     }
 
@@ -38,7 +38,9 @@ public class ActivityEventMapper {
         response.setStartTime(entity.getStartTime());
         response.setEndTime(entity.getEndTime());
         response.setCapacity(entity.getCapacity());
-        response.setInstructorId(entity.getInstructor().getId());
+        response.setInstructorId(
+    entity.getInstructor() != null ? entity.getInstructor().getId() : null
+);
         response.setPrice(entity.getPrice());
         response.setStatus(entity.getStatus());
         return response;
@@ -55,5 +57,6 @@ public class ActivityEventMapper {
         entity.setCapacity(request.getCapacity());
         entity.setInstructor(instructor);
         entity.setPrice(request.getPrice());
+        entity.setStatus(request.getStatus());
     }
 }

@@ -1,7 +1,8 @@
 package com.resortmanagement.system.security.service;
 
 import java.time.LocalDate;
-
+import java.util.UUID;
+import java.util.List;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import com.resortmanagement.system.hr.dto.employee.EmployeeRequest;
 import com.resortmanagement.system.hr.entity.Employee.EmployeeStatus;
 import com.resortmanagement.system.hr.repository.RoleRepository;
 import com.resortmanagement.system.hr.service.EmployeeRoleService;
+import com.resortmanagement.system.hr.repository.EmployeeRepository;
 import com.resortmanagement.system.hr.service.EmployeeService;
 import com.resortmanagement.system.security.dto.AuthRequest;
 import com.resortmanagement.system.security.dto.AuthResponse;
@@ -41,9 +43,12 @@ public class AuthService {
     private final EmployeeRoleService employeeRoleService;
     private final RoleRepository roleRepository;
     private final GuestService guestService;
-
+     private final EmployeeRepository employeeRepository;
+    
     @Transactional
     public AuthResponse signup(SignUpRequest request) {
+
+
         if (request.getRole() == null) {
             throw new IllegalArgumentException("Role must be specified: GUEST, EMPLOYEE, or ADMIN.");
         }
@@ -55,6 +60,8 @@ public class AuthService {
                 .build();
         user = userRepository.save(user);
 
+        UUID employeeId = null;
+        List<String> permissions = List.of();
         if (request.getRole() == Role.EMPLOYEE || request.getRole() == Role.ADMIN) {
             var employee = EmployeeRequest.builder()
                     .firstName(request.getFirstName())
@@ -66,24 +73,25 @@ public class AuthService {
                     .build();
             // FIX: Was calling "EmployeeService.save()" — now correctly calls "employeeService.save()"
             var savedEmployee = employeeService.save(employee);
+            employeeId = savedEmployee.getId();
 
             if (request.getDepartment() != null) {
-                var role = roleRepository.findByName(
-                    request.getRole().name()
+                var workRole = roleRepository.findByNameIgnoreCase(
+                    request.getDepartment()
                 ).orElseThrow(
                     () -> new ApplicationException("Role not found")
-                );
+                );  
                 EmployeeRoleDTO employeeRoleDto = new EmployeeRoleDTO(
                     savedEmployee.getId(),
                     savedEmployee.getFirstName() + " " + savedEmployee.getLastName(),
-                    role.getId(),
-                    request.getDepartment(),
+                    workRole.getId(),
+                    workRole.getName(),
                     LocalDate.now(),
                     null
                 );
                 employeeRoleService.save(employeeRoleDto);
             }
-
+             permissions = employeeRoleService.getPermissionsForEmployee(employeeId);
         } else if (request.getRole() == Role.GUEST) {
 
             Guest guest = Guest.builder()
@@ -100,7 +108,7 @@ public class AuthService {
             guestService.createGuest(guest);
         }
 
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateTokenWithEmployeeAndPermissions(user, employeeId, permissions);
         return AuthResponse.builder()
                 .token(jwtToken)
                 .role(user.getRole())
@@ -124,7 +132,16 @@ public class AuthService {
         var user = userRepository.findByEmailIgnoreCase(request.getEmail())
                 .orElseThrow(() -> new IllegalStateException("User not found after successful authentication."));
 
-        var jwtToken = jwtService.generateToken(user);
+
+         UUID employeeId = employeeRepository.findByEmail(user.getEmail())
+                .map(e -> e.getId())
+                .orElse(null);
+
+        List<String> permissions = employeeId != null
+                ? employeeRoleService.getPermissionsForEmployee(employeeId)
+                : List.of();
+        
+        var jwtToken = jwtService.generateTokenWithEmployeeAndPermissions(user, employeeId, permissions);
         return AuthResponse.builder()
                 .token(jwtToken)
                 .role(user.getRole())

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -105,6 +106,9 @@ public class JwtService {
         return buildToken(claims, userDetails, jwtExpiration);
     }
 
+    
+
+
     // Uses jjwt 0.11.x API (setClaims, setSubject, setIssuedAt, setExpiration, signWith)
     private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         return Jwts.builder()
@@ -147,4 +151,44 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+    // ✅ Add this new method — generates token with employeeId claim
+    public String generateTokenWithEmployee(UserDetails userDetails, UUID employeeId) {
+    Map<String, Object> extraClaims = new HashMap<>();
+    if (employeeId != null) {
+        extraClaims.put("employeeId", employeeId.toString());
+    }
+    return generateToken(extraClaims, userDetails);
+    }
+
+    // Add this method
+public String generateTokenWithEmployeeAndPermissions(
+        UserDetails userDetails, UUID employeeId, List<String> permissions) {
+    Map<String, Object> extraClaims = new HashMap<>();
+    if (employeeId != null) {
+        extraClaims.put("employeeId", employeeId.toString());
+    }
+    if (permissions != null && !permissions.isEmpty()) {
+        extraClaims.put("permissions", permissions); // ✅ embed as list
+    }
+    return generateToken(extraClaims, userDetails);
+    }
+
+    public List<String> extractPermissions(String token) {
+    try {
+        Claims claims = extractAllClaims(token);
+        Object permsObj = claims.get("permissions");
+        if (permsObj instanceof List) {
+            List<?> raw = (List<?>) permsObj;
+            List<String> perms = new ArrayList<>();
+            for (Object o : raw) {
+                if (o != null) perms.add(Objects.toString(o));
+            }
+            return perms;
+        }
+        return Collections.emptyList();
+    } catch (ExpiredJwtException | MalformedJwtException | SignatureException ex) {
+        return Collections.emptyList();
+    }
+}
 }

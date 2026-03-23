@@ -26,6 +26,8 @@ public class RoomResponse {
 
     private UUID roomTypeId;
 
+    private String roomTypeName;
+
     private List<UUID> amenityIds;
 
     private List<UUID> roomBlockIds;

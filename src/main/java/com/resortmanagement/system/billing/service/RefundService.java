@@ -58,9 +58,10 @@ public class RefundService {
     }
 
     @Transactional(readOnly = true)
-    public Payment getRefund(UUID refundId) {
-        return paymentRepository.findById(refundId)
-                .orElseThrow(() -> new ApplicationException("Refund not found with id: " + refundId));
+    // Fix — rename to getPayment and fix error message
+    public Payment getPayment(UUID paymentId) {
+        return paymentRepository.findById(paymentId)
+            .orElseThrow(() -> new ApplicationException("Payment not found with id: " + paymentId));
     }
 
     public Refund save(Refund refund) {

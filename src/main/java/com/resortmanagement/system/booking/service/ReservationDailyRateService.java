@@ -20,7 +20,7 @@ public class ReservationDailyRateService {
     private final ReservationDailyRateRepository repository;
 
     public List<ReservationDailyRateResponse> getRates(UUID reservationId) {
-        return repository.findById(reservationId)
+        return repository.findByReservationId(reservationId)
             .stream()
             .map(ReservationDailyRateMapper::toResponse)
             .toList();

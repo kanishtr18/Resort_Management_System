@@ -8,6 +8,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.resortmanagement.system.inventory.dto.request.InventoryItemRequest;
+import com.resortmanagement.system.inventory.dto.response.InventoryItemResponse;
 import com.resortmanagement.system.inventory.entity.InventoryItem;
 import com.resortmanagement.system.inventory.repository.InventoryItemRepository;
 
@@ -68,12 +70,25 @@ public class InventoryItemService {
     /**
      * Update inventory item
      */
-    public com.resortmanagement.system.inventory.dto.response.InventoryItemResponse update(UUID id, com.resortmanagement.system.inventory.dto.request.InventoryItemRequest request) {
-        InventoryItem entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Inventory item not found: " + id));
-        mapper.updateEntity(entity, request);
-        return mapper.toResponse(repository.save(entity));
+    public InventoryItemResponse update(UUID id, InventoryItemRequest request) {
+    InventoryItem entity = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Inventory item not found: " + id));
+
+    // ✅ Prevent update from setting negative stock
+    if (request.getQuantityOnHand() != null && 
+        request.getQuantityOnHand().compareTo(BigDecimal.ZERO) < 0) {
+        throw new IllegalArgumentException("Quantity on hand cannot be negative.");
     }
+
+    // ✅ Prevent reorder point from being negative
+    if (request.getReorderPoint() != null && 
+        request.getReorderPoint().compareTo(BigDecimal.ZERO) < 0) {
+        throw new IllegalArgumentException("Reorder point cannot be negative.");
+    }
+
+    mapper.updateEntity(entity, request);
+    return mapper.toResponse(repository.save(entity));
+}
 
     /**
      * Delete inventory item (master data → hard delete allowed)

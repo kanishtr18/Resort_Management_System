@@ -19,6 +19,7 @@ package com.resortmanagement.system.booking.controller;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,14 +43,16 @@ public class ReservationAddOnController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<ReservationAddOnResponse> addAddOn(
-            @PathVariable UUID reservationId,
-            @RequestBody @Valid ReservationAddOnRequest request) {
-        return ResponseEntity.ok(service.addAddOn(reservationId, request));
-    }
+    @PostMapping("/reservation/{reservationId}")
+    @PreAuthorize("hasAnyAuthority('reservations:edit', 'ADMIN')")
+public ResponseEntity<ReservationAddOnResponse> addAddOn(
+        @PathVariable UUID reservationId,
+        @RequestBody @Valid ReservationAddOnRequest request) {
+    return ResponseEntity.ok(service.addAddOn(reservationId, request));
+}
 
     @DeleteMapping("/{addOnId}")
+    @PreAuthorize("hasAnyAuthority('reservations:edit', 'ADMIN')")
     public ResponseEntity<Void> removeAddOn(
             @PathVariable UUID addOnId) {
         service.removeAddOn(addOnId);

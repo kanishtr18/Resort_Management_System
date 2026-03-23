@@ -42,9 +42,10 @@ public class ReservationRoomAssignmentService {
     }
 
     public void unassignRoom(UUID assignmentId) {
-        ReservationRoomAssignment assignment = repository.findByIdAndDeletedFalse(assignmentId)
-            .orElseThrow(() -> new ApplicationException("Room assignment not found"));
-        assignment.getRoom().setStatus(RoomStatus.AVAILABLE);
-        repository.save(assignment);
+    ReservationRoomAssignment assignment = repository.findByIdAndDeletedFalse(assignmentId)
+        .orElseThrow(() -> new ApplicationException("Room assignment not found"));
+    assignment.getRoom().setStatus(RoomStatus.AVAILABLE);
+    assignment.setDeleted(true);  // ADD
+    repository.save(assignment);
     }
 }

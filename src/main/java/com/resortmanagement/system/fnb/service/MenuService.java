@@ -1,5 +1,6 @@
 package com.resortmanagement.system.fnb.service;
 
+import com.resortmanagement.system.fnb.dto.response.MenuResponse;
 import com.resortmanagement.system.fnb.entity.Menu;
 import com.resortmanagement.system.fnb.repository.MenuRepository;
 
@@ -10,6 +11,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -29,10 +31,10 @@ public class MenuService {
                 .collect(java.util.stream.Collectors.toList());
     }
 
-    public List<com.resortmanagement.system.fnb.dto.response.MenuResponse> findAll() {
-        return repository.findAll().stream()
-                .map(mapper::toResponse)
-                .collect(java.util.stream.Collectors.toList());
+    public List<MenuResponse> findAll() {
+    return repository.findByDeletedFalse().stream()
+            .map(mapper::toResponse)
+            .collect(Collectors.toList());
     }
 
     public Optional<com.resortmanagement.system.fnb.dto.response.MenuResponse> findById(UUID id) {

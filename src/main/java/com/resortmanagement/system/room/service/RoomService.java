@@ -52,8 +52,9 @@ public class RoomService {
     }
 
     // GET BY ID
+   // Fix: use findByIdAndDeletedFalse instead of findById
     public RoomResponse getById(UUID id) {
-        Room room = roomRepository.findById(id)
+        Room room = roomRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
         return RoomMapper.toResponse(room);
     }

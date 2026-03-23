@@ -25,6 +25,7 @@ public class RoomUpdateRequest {
     private String description;
 
     @Min(value = 1, message = "Max occupancy must be at least 1")
+    @jakarta.validation.constraints.Positive
     private Integer maxOccupancy;
 
     private UUID roomTypeId;

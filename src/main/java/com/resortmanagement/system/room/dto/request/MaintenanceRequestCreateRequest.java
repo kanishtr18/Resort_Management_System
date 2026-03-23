@@ -18,8 +18,10 @@ public class MaintenanceRequestCreateRequest {
     @NotNull(message = "Room or facility ID is required")
     private UUID roomOrFacilityId;
 
-    @NotNull(message = "ReportedBy (BookingGuest ID) is required")
-    private UUID reportedById;
+    // Fix: separate fields for employee or guest reporter
+    // At least one must be provided — validated in service
+    private UUID reportedByEmployeeId;
+    private UUID reportedByGuestId;
 
     @NotBlank(message = "Description is required")
     @Size(max = 500, message = "Description must be at most 500 characters")

@@ -43,14 +43,14 @@ public class Order extends AuditableSoftDeletable {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id")
-    private BookingGuest guestId;
+    private BookingGuest guest;
 
     /**
      * Reservation context (nullable for POS orders)
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")
-    private Reservation reservationId;
+    private Reservation reservation;
 
     /**
      * Table reference for restaurant orders

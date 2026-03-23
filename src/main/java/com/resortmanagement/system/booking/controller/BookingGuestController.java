@@ -21,6 +21,7 @@ package com.resortmanagement.system.booking.controller;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ public class BookingGuestController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('reservations:edit', 'ADMIN')")
     public ResponseEntity<Void> removeGuestFromReservation(
             @PathVariable UUID id) {
         service.removeGuest(id);

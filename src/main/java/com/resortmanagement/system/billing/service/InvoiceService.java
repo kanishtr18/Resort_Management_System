@@ -32,12 +32,17 @@ import com.resortmanagement.system.common.exception.ApplicationException;
 public class InvoiceService {
 
     private final InvoiceRepository repository;
+    private final FolioRepository folioRepository;
+    private final ReservationRepository reservationRepository;
+
     public InvoiceService(
         InvoiceRepository repository,
         FolioRepository folioRepository,
         ReservationRepository reservationRepository
     ) {
         this.repository = repository;
+         this.folioRepository = folioRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     @Transactional(readOnly = true)
@@ -61,17 +66,15 @@ public class InvoiceService {
     }
 
     @Transactional(readOnly = true)
-    public Reservation getReservationForInvoice(UUID invoiceId) {
-        Invoice invoice = repository.findById(invoiceId)
-                .orElseThrow(() -> new ApplicationException("Invoice not found with id: " + invoiceId));
-        return invoice.getReservation();
-    }
+    public Reservation getReservationForInvoice(UUID reservationId) {
+    return reservationRepository.findByIdAndDeletedFalse(reservationId)
+        .orElseThrow(() -> new ApplicationException("Reservation not found: " + reservationId));
+}
 
     @Transactional(readOnly = true)
-    public Folio getFolioForInvoice(UUID invoiceId) {
-        Invoice invoice = repository.findById(invoiceId)
-                .orElseThrow(() -> new ApplicationException("Invoice not found with id: " + invoiceId));
-        return invoice.getFolio();
+    public Folio getFolioForInvoice(UUID folioId) {
+    return folioRepository.findById(folioId)
+        .orElseThrow(() -> new ApplicationException("Folio not found: " + folioId));
     }
 
     public Invoice save(Invoice invoice) {

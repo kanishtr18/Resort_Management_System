@@ -4,7 +4,10 @@ import com.resortmanagement.system.booking.dto.request.ReservationAddOnRequest;
 import com.resortmanagement.system.booking.dto.response.ReservationAddOnResponse;
 import com.resortmanagement.system.booking.entity.ReservationAddOn;
 
-public interface ReservationAddOnMapper {
+public class ReservationAddOnMapper {
+
+    private ReservationAddOnMapper() {}
+
     public static ReservationAddOn toEntity(ReservationAddOnRequest req) {
         if (req == null) return null;
 

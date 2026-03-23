@@ -1,5 +1,6 @@
 package com.resortmanagement.system.hr.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resortmanagement.system.hr.dto.EmployeeRoleDTO;
 import com.resortmanagement.system.hr.entity.Employee;
 import com.resortmanagement.system.hr.entity.EmployeeRole;
@@ -23,14 +25,17 @@ public class EmployeeRoleService {
     private final EmployeeRoleRepository repository;
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
+    private final ObjectMapper objectMapper;
 
     public EmployeeRoleService(
             EmployeeRoleRepository repository,
             EmployeeRepository employeeRepository,
-            RoleRepository roleRepository) {
+            RoleRepository roleRepository,
+            ObjectMapper objectMapper) {
         this.repository = repository;
         this.employeeRepository = employeeRepository;
         this.roleRepository = roleRepository;
+        this.objectMapper = objectMapper;
     }
 
     @Transactional(readOnly = true)
@@ -104,5 +109,24 @@ public class EmployeeRoleService {
         dto.setAssignedDate(entity.getAssignedDate());
         dto.setEndDate(entity.getEndDate());
         return dto;
+    }
+    
+    public List<String> getPermissionsForEmployee(UUID employeeId) {
+        return repository.findByEmployeeIdAndEndDateIsNull(employeeId)
+            .stream()
+            .flatMap(er -> {
+                String json = er.getRole().getPermissionsJson();
+                if (json == null || json.isBlank()) return java.util.stream.Stream.empty();
+                try {
+                    // Fix: use injected objectMapper, not new ObjectMapper()
+                    List<String> perms = objectMapper.readValue(json,
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+                    return perms.stream();
+                } catch (Exception e) {
+                    return java.util.stream.Stream.empty();
+                }
+            })
+            .distinct()
+            .collect(java.util.stream.Collectors.toList());
     }
 }

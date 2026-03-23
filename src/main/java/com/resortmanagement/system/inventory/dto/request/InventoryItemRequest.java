@@ -28,7 +28,13 @@ public class InventoryItemRequest {
     @Positive(message = "Unit cost must be positive")
     private BigDecimal unitCost;
 
-    // Manual Getters and Setters
+       @PositiveOrZero(message = "Quantity on hand cannot be negative")
+    private BigDecimal quantityOnHand;
+
+    // ✅ Was missing — needed for reorder logic
+    @PositiveOrZero(message = "Reorder quantity must be zero or positive")
+    private BigDecimal reorderQty;
+
 
     public String getSku() {
         return sku;
@@ -69,4 +75,19 @@ public class InventoryItemRequest {
     public void setUnitCost(BigDecimal unitCost) {
         this.unitCost = unitCost;
     }
+    public BigDecimal getQuantityOnHand() {
+        return quantityOnHand;
+    }
+    public void setQuantityOnHand(BigDecimal quantityOnHand) {
+        this.quantityOnHand = quantityOnHand;
+    }
+
+    public BigDecimal getReorderQty() {
+        return reorderQty;
+    }
+
+    public void setReorderQty(BigDecimal reorderQty) {
+        this.reorderQty = reorderQty;
+    }
+
 }

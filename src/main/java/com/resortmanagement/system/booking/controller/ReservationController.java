@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,36 +50,43 @@ public class ReservationController {
 
     private final ReservationService service;
 
-    public ReservationController(ReservationService service) {
+    public ReservationController(ReservationService
+    
+    service) {
         this.service = service;
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('reservations:create', 'ADMIN')")
     public ResponseEntity<ReservationDetailResponse> createReservation(
             @RequestBody @Valid ReservationCreateRequest request) {
         return ResponseEntity.ok(service.createReservation(request));
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('reservations:view', 'reservations:create', 'reservations:edit', 'reservations:delete', 'ADMIN')")
     public ResponseEntity<List<ReservationResponse>> listReservations() {
         return ResponseEntity.ok(service.listReservations());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('reservations:view', 'reservations:create', 'reservations:edit', 'reservations:delete', 'ADMIN')")
     public ResponseEntity<ReservationDetailResponse> getReservationDetail(
             @PathVariable UUID id) {
         return ResponseEntity.ok(service.getReservation(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservationUpdateRequest> updateReservation(
-            @PathVariable UUID id,
-            @RequestBody @Valid ReservationUpdateRequest request) {
-        service.updateReservation(id, request);
-        return ResponseEntity.ok(request);
+    @PreAuthorize("hasAnyAuthority('reservations:edit', 'ADMIN')")
+    public ResponseEntity<Void> updateReservation(
+        @PathVariable UUID id,
+        @RequestBody @Valid ReservationUpdateRequest request) {
+    service.updateReservation(id, request);
+    return ResponseEntity.noContent().build();  // 204 is correct for PUT with no body
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('reservations:delete', 'ADMIN')")
     public ResponseEntity<Void> cancelReservation(@PathVariable UUID id) {
         service.cancelReservation(id);
         return ResponseEntity.noContent().build();

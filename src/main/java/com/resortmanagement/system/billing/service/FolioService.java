@@ -69,7 +69,8 @@ public class FolioService {
 
     @Transactional(readOnly = true)
     public Folio findByReservationId(UUID reservationId) {
-        return repository.findByReservationId(reservationId);
+        return repository.findFirstByReservationIdAndStatus(reservationId, FolioStatus.OPEN)
+            .orElse(null); // null means no open folio exists yet
     }
 
     @Transactional(readOnly = true)
@@ -84,19 +85,24 @@ public class FolioService {
                 .orElseThrow(() -> new ApplicationException("Booking guest not found with id: " + bookingGuestId));
     }
     
-    public FolioResponse createFolioForReservation(FolioRequest request ) {
-        Folio folio = BillingMapper.toEntity(request);
-        folio.setReservation(reservationRepository.findByIdAndDeletedFalse(request.getReservationId())
-                .orElseThrow(() -> new ApplicationException("Reservation not found with id: " + request.getReservationId())));
-        folio.setBookingGuest(bookingGuestRepository.findByIdAndDeletedFalse(request.getBookingGuestId())
-                .orElseThrow(() -> new ApplicationException("Booking guest not found with id: " + request.getBookingGuestId())));
-        
-        Folio created = save(folio);
-        FolioResponse response = BillingMapper.toResponse(created);
+    public FolioResponse createFolioForReservation(FolioRequest request) {
+    Folio folio = BillingMapper.toEntity(request);
+    folio.setReservation(reservationRepository.findByIdAndDeletedFalse(request.getReservationId())
+            .orElseThrow(() -> new ApplicationException("Reservation not found with id: " + request.getReservationId())));
+    folio.setBookingGuest(bookingGuestRepository.findByIdAndDeletedFalse(request.getBookingGuestId())
+            .orElseThrow(() -> new ApplicationException("Booking guest not found with id: " + request.getBookingGuestId())));
+
+    Folio created = save(folio);
+    FolioResponse response = BillingMapper.toResponse(created);
+
+    // Fix: was using 'updated' which doesn't exist here
+    if (created.getReservation() != null)
         response.setReservationId(created.getReservation().getId());
+    if (created.getBookingGuest() != null)
         response.setBookingGuestId(created.getBookingGuest().getId());
-        return response;
-    }
+
+    return response;
+}
 
     public Folio createFolioForReservation(UUID reservationId, UUID bookingGuestId) {
         Folio folio = new Folio();
@@ -111,25 +117,30 @@ public class FolioService {
     }
 
     public FolioResponse updateFolio(UUID id, FolioRequest request) {
-        Folio folio = repository.findById(id)
-                .orElseThrow(() -> new ApplicationException("Folio not found with id: " + id));
-        
-        if (folio.getStatus() == FolioStatus.CLOSED) {
-            throw new ApplicationException("Cannot update a closed folio");
-        }
-        if (folio.getStatus() == FolioStatus.VOID) {
-            throw new ApplicationException("Cannot update a voided folio");
-        }
+    Folio folio = repository.findById(id)
+            .orElseThrow(() -> new ApplicationException("Folio not found with id: " + id));
 
-        folio.setName(request.getName());
-        folio.setStatus(request.getStatus() != null ? request.getStatus() : folio.getStatus());
-        Folio updated = save(folio);
-        
-        FolioResponse response = BillingMapper.toResponse(updated);
-        response.setReservationId(updated.getReservation().getId());
-        response.setBookingGuestId(updated.getBookingGuest().getId());
-        return response;
+    if (folio.getStatus() == FolioStatus.CLOSED) {
+        throw new ApplicationException("Cannot update a closed folio");
     }
+    if (folio.getStatus() == FolioStatus.VOID) {
+        throw new ApplicationException("Cannot update a voided folio");
+    }
+
+    folio.setName(request.getName());
+    folio.setStatus(request.getStatus() != null ? request.getStatus() : folio.getStatus());
+    Folio updated = save(folio);
+
+    FolioResponse response = BillingMapper.toResponse(updated);
+
+    // Fix: added null checks
+    if (updated.getReservation() != null)
+        response.setReservationId(updated.getReservation().getId());
+    if (updated.getBookingGuest() != null)
+        response.setBookingGuestId(updated.getBookingGuest().getId());
+
+    return response;
+}
 
     public Folio save(Folio folio) {
         // Validation: ensure folio has a name

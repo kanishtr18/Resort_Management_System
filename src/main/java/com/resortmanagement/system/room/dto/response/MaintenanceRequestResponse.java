@@ -16,7 +16,10 @@ public class MaintenanceRequestResponse {
     private UUID id;
     private UUID roomOrFacilityId;
     private UUID roomBlockId;
-    private UUID reportedById;
+
+    // Fix: separate fields instead of single reportedById
+    private UUID reportedByEmployeeId;
+    private UUID reportedByGuestId;
     private UUID assignedStaffId;
 
     private String description;

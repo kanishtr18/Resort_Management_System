@@ -24,6 +24,7 @@ import java.util.UUID;
 import com.resortmanagement.system.booking.entity.Reservation;
 import com.resortmanagement.system.common.audit.AuditableSoftDeletable;
 import com.resortmanagement.system.common.guest.Guest;
+import com.resortmanagement.system.hr.entity.Employee;
 import com.resortmanagement.system.support.enums.TicketPriority;
 import com.resortmanagement.system.support.enums.TicketStatus;
 
@@ -69,7 +70,7 @@ public class HelpTicket extends AuditableSoftDeletable {
 
     @ManyToOne
     @JoinColumn(name = "assigned_to")
-    private Guest assignedTo;
+    private Employee assignedTo;
 
     @ManyToOne
     @JoinColumn(name = "reservation_id")

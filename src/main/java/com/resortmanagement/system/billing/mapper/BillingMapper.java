@@ -35,8 +35,8 @@ public class BillingMapper {
     public static InvoiceResponse toResponse(Invoice entity) {
         InvoiceResponse response = new InvoiceResponse();
         response.setId(entity.getId());
-        response.setFolioId(entity.getFolio().getId());
-        response.setReservationId(entity.getReservation().getId());
+        response.setFolioId(entity.getFolio() != null ? entity.getFolio().getId() : null);
+        response.setReservationId(entity.getReservation() != null ? entity.getReservation().getId() : null);
         response.setIssueDate(entity.getIssueDate());
         response.setDueDate(entity.getDueDate());
         response.setTotalAmount(entity.getTotalAmount());
@@ -63,7 +63,7 @@ public class BillingMapper {
     public static PaymentResponse toResponse(Payment entity) {
         PaymentResponse response = new PaymentResponse();
         response.setId(entity.getId());
-        response.setInvoiceId(entity.getInvoice().getId());
+        response.setInvoiceId(entity.getInvoice() != null ? entity.getInvoice().getId() : null);
         response.setAmount(entity.getAmount());
         response.setPaymentMethod(entity.getPaymentMethod());
         response.setTransactionRef(entity.getTransactionRef());
@@ -83,7 +83,7 @@ public class BillingMapper {
     public static RefundResponse toResponse(Refund entity) {
         RefundResponse response = new RefundResponse();
         response.setId(entity.getId());
-        response.setPaymentId(entity.getPayment().getId());
+        response.setPaymentId(entity.getPayment() != null ? entity.getPayment().getId() : null);
         response.setAmount(entity.getAmount());
         response.setReason(entity.getReason());
         response.setProcessedBy(entity.getProcessedBy());

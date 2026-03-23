@@ -46,6 +46,11 @@ public class ReservationMapper {
         res.setEndDate(entity.getEndDate());
         res.setNumGuests(entity.getNumGuests());
         res.setStatus(entity.getStatus());
+
+        if (entity.getRatePlan() != null && entity.getRatePlan().getRoomTypeId() != null) {
+            res.setRoomTypeId(entity.getRatePlan().getRoomTypeId().getId());
+        }
+
         return res;
     }
 

@@ -59,30 +59,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {
-                    // Prefer roles from token (single source of truth for requests)
                     List<String> rolesFromToken = jwtService.extractRoles(jwt);
+                    List<String> permissionsFromToken = jwtService.extractPermissions(jwt); // ADD
 
                     List<SimpleGrantedAuthority> authorities;
                     if (rolesFromToken == null || rolesFromToken.isEmpty()) {
-                        // fallback to authorities provided by UserDetails (DB)
                         authorities = userDetails.getAuthorities()
-                                    .stream()
-                                    .map(a -> new SimpleGrantedAuthority(a.getAuthority()))
-                                    .collect(Collectors.toList());
+                                .stream()
+                                .map(a -> new SimpleGrantedAuthority(a.getAuthority()))
+                                .collect(Collectors.toList());
                     } else {
                         authorities = rolesFromToken.stream()
-                                    .filter(Objects::nonNull)
-                                    .map(String::trim)
-                                    .filter(s -> !s.isEmpty())
-                                    .map(SimpleGrantedAuthority::new)   // matches hasAnyAuthority("ADMIN","EMPLOYEE")
-                                    .collect(Collectors.toList());
+                                .filter(Objects::nonNull)
+                                .map(String::trim)
+                                .filter(s -> !s.isEmpty())
+                                .map(SimpleGrantedAuthority::new)
+                                .collect(Collectors.toList());
                     }
+
+                    // ADD — merge permissions into same authority list
+                    permissionsFromToken.stream()
+                            .filter(Objects::nonNull)
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .map(SimpleGrantedAuthority::new)
+                            .forEach(authorities::add);
+
                     System.out.println("Authorities from token: " + authorities);
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            authorities
-                    );
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }

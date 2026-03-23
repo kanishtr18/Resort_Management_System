@@ -54,8 +54,10 @@ public class MenuItemMapper {
         }
         MenuItemIngredientResponse response = new MenuItemIngredientResponse();
         response.setId(ingredient.getId());
-        response.setInventoryItemId(ingredient.getInventoryItem().getId());
-        response.setInventoryItemName(ingredient.getInventoryItem().getName());
+        response.setInventoryItemId(
+            ingredient.getInventoryItem() != null ? ingredient.getInventoryItem().getId() : null);
+        response.setInventoryItemName(
+            ingredient.getInventoryItem() != null ? ingredient.getInventoryItem().getName() : null);
         response.setQuantityRequired(ingredient.getQuantityRequired());
         response.setUnit(ingredient.getUnit());
         return response;

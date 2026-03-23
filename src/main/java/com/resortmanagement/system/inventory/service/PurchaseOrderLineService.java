@@ -3,44 +3,46 @@ package com.resortmanagement.system.inventory.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
+import com.resortmanagement.system.inventory.dto.response.PurchaseOrderLineResponse;
 import com.resortmanagement.system.inventory.entity.PurchaseOrderLine;
+import com.resortmanagement.system.inventory.mapper.PurchaseOrderLineMapper;
 import com.resortmanagement.system.inventory.repository.PurchaseOrderLineRepository;
 
 @Service
 public class PurchaseOrderLineService {
 
     private final PurchaseOrderLineRepository repository;
+    private final PurchaseOrderLineMapper mapper;
 
-    public PurchaseOrderLineService(PurchaseOrderLineRepository repository) {
+    public PurchaseOrderLineService(
+            PurchaseOrderLineRepository repository,
+            PurchaseOrderLineMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public List<PurchaseOrderLine> findAll() {
-        // add pagination and filtering
-        return repository.findAll();
+    public List<PurchaseOrderLineResponse> findAll() {
+        return repository.findAll().stream()
+                .map(mapper::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public Optional<PurchaseOrderLine> findById(Long id) {
-        // add caching and error handling
-        return repository.findById(id);
+    public Optional<PurchaseOrderLineResponse> findById(UUID id) {
+        return repository.findById(id).map(mapper::toResponse);
     }
 
-    public PurchaseOrderLine save(PurchaseOrderLine entity) {
-        // add validation and business rules
-        return repository.save(entity);
+    // Fix: was throwing UnsupportedOperationException
+    public List<PurchaseOrderLineResponse> findByPurchaseOrderId(UUID purchaseOrderId) {
+        return repository.findByPurchaseOrderId(purchaseOrderId).stream()
+                .map(mapper::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public void deleteById(Long id) {
-        // add soft delete if required
+    public void deleteById(UUID id) {
         repository.deleteById(id);
-    }
-
-    public @Nullable Object findByPurchaseOrderId(UUID purchaseOrderId) {
-        // Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByPurchaseOrderId'");
     }
 }

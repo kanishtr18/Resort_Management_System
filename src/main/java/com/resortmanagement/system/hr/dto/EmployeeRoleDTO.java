@@ -2,10 +2,11 @@ package com.resortmanagement.system.hr.dto;
 
 import java.time.LocalDate;
 import java.util.UUID;
-import lombok.Data;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -16,6 +17,7 @@ public class EmployeeRoleDTO {
     private String employeeName;
     private UUID roleId;
     private String roleName;
+    // private String department;
     private LocalDate assignedDate;
     private LocalDate endDate;
 }

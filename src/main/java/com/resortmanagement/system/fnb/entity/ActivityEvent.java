@@ -38,7 +38,7 @@ public class ActivityEvent extends AuditableSoftDeletable {
     @Column(length = 500)
     private String description;
 
-    @Column(name = "start_time", nullable = false)
+    @Column(name = "start_time", nullable = false)      
     private Instant startTime;
 
     @Column(name = "end_time", nullable = false)

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.resortmanagement.system.room.dto.request.RoomBlockCreateRequest;
@@ -23,31 +25,37 @@ public class RoomBlockController {
         this.service = service;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public RoomBlockResponse create(@Valid @RequestBody RoomBlockCreateRequest dto) {
-        return service.create(dto);
-    }
-
     @GetMapping
-    public List<RoomBlockResponse> getAll() {
-        return service.getAll();
+    @PreAuthorize("hasAnyAuthority('rooms:view', 'rooms:manage', 'maintenance:view', 'maintenance:manage', 'ADMIN')")
+    public ResponseEntity<List<RoomBlockResponse>> getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public RoomBlockResponse getById(@PathVariable UUID id) {
-        return service.getById(id);
+    @PreAuthorize("hasAnyAuthority('rooms:view', 'rooms:manage', 'maintenance:view', 'maintenance:manage', 'ADMIN')")
+    public ResponseEntity<RoomBlockResponse> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.getById(id));
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('rooms:manage', 'maintenance:manage', 'ADMIN')")
+    public ResponseEntity<RoomBlockResponse> create(
+            @Valid @RequestBody RoomBlockCreateRequest dto) {
+        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public RoomBlockResponse update(@PathVariable UUID id,
-                                    @RequestBody RoomBlockUpdateRequest dto) {
-        return service.update(id, dto);
+    @PreAuthorize("hasAnyAuthority('rooms:manage', 'maintenance:manage', 'ADMIN')")
+    public ResponseEntity<RoomBlockResponse> update(
+            @PathVariable UUID id,
+            @RequestBody RoomBlockUpdateRequest dto) {
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable UUID id) {
+    @PreAuthorize("hasAnyAuthority('rooms:manage', 'maintenance:manage', 'ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

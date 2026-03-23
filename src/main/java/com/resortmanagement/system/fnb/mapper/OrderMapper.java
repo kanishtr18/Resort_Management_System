@@ -26,30 +26,30 @@ public class OrderMapper {
     }
 
     public OrderResponse toResponse(Order entity) {
-        if (entity == null) {
-            return null;
-        }
-        OrderResponse response = new OrderResponse();
-        response.setId(entity.getId());
-        response.setTableId(entity.getTableId());
-        response.setTotalAmount(entity.getTotalAmount());
-        response.setAssignedFolioId(entity.getAssignedFolio() != null ? entity.getAssignedFolio().getId() : null);
-        if (entity.getStatus() != null) {
-            response.setStatus(entity.getStatus().name());
-        }
-        
-        response.setPlacedAt(entity.getPlacedAt());
+    if (entity == null) return null;
 
-        if (entity.getOrderItems() != null) {
-            response.setItems(entity.getOrderItems().stream()
-                .map(this::toItemResponse)
-                .collect(Collectors.toList()));
-        } else {
-            response.setItems(Collections.emptyList());
-        }
-        
-        return response;
+    OrderResponse response = new OrderResponse();
+    response.setId(entity.getId());
+    response.setTableId(entity.getTableId());
+    response.setTotalAmount(entity.getTotalAmount());
+    response.setPlacedAt(entity.getPlacedAt());
+
+    // Fix: map guest and reservation (renamed fields in entity)
+    response.setGuestId(entity.getGuest() != null ? entity.getGuest().getId() : null);
+    response.setReservationId(entity.getReservation() != null ? entity.getReservation().getId() : null);
+
+    response.setAssignedFolioId(entity.getAssignedFolio() != null ? entity.getAssignedFolio().getId() : null);
+
+    if (entity.getStatus() != null) {
+        response.setStatus(entity.getStatus().name());
     }
+
+    response.setItems(entity.getOrderItems() != null
+        ? entity.getOrderItems().stream().map(this::toItemResponse).collect(Collectors.toList())
+        : Collections.emptyList());
+
+    return response;
+}
 
     private OrderItemResponse toItemResponse(OrderItem item) {
         if (item == null) {

@@ -72,9 +72,13 @@ public class MaintenanceRequest extends AuditableSoftDeletable {
     @Column(name = "resolved_at")
     private LocalDateTime resolvedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "reported_by")
-    private BookingGuest reportedBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reported_by_employee_id")
+    private Employee reportedByEmployee;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reported_by_guest_id")
+    private com.resortmanagement.system.common.guest.Guest reportedByGuest;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_staff_id")

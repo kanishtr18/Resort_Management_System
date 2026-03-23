@@ -68,7 +68,7 @@ public class Invoice extends Auditable {
     private String invoiceNumber;
 
     @NotNull
-    @Column(name = "issue_date", nullable = false)
+    @Column(name = "issue_date")
     private Instant issueDate;
 
     @Column(name = "due_date")

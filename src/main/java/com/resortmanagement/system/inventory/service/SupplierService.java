@@ -11,6 +11,7 @@ import com.resortmanagement.system.inventory.entity.Supplier;
 import com.resortmanagement.system.inventory.repository.SupplierRepository;
 
 @Service
+@Transactional
 public class SupplierService {
 
     private final SupplierRepository repository;
@@ -38,12 +39,12 @@ public class SupplierService {
                 .filter(supplier -> !supplier.isDeleted())
                 .map(mapper::toResponse);
     }
-
+    @Transactional
     public com.resortmanagement.system.inventory.dto.response.SupplierResponse create(com.resortmanagement.system.inventory.dto.request.SupplierRequest request) {
         Supplier supplier = mapper.toEntity(request);
         return mapper.toResponse(repository.save(supplier));
     }
-
+    @Transactional
     public com.resortmanagement.system.inventory.dto.response.SupplierResponse update(UUID id, com.resortmanagement.system.inventory.dto.request.SupplierRequest request) {
         Supplier supplier = repository.findById(id)
                 .filter(s -> !s.isDeleted())

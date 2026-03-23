@@ -74,4 +74,9 @@ public class HousekeepingTaskService {
         task.setDeleted(true);
         repo.save(task);
     }
+    public List<HousekeepingTaskResponse> getByStaff(UUID staffId) {
+    return HousekeepingTaskMapper.toResponseList(
+        repo.findByStaffIdAndDeletedFalse(staffId)
+    );
+}
 }

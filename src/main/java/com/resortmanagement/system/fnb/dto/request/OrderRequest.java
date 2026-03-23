@@ -6,9 +6,9 @@ import java.util.UUID;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
-import lombok.Data;
 
-@Data
+
+
 public class OrderRequest {
 
     private UUID guestId;

@@ -78,11 +78,11 @@ import lombok.Setter;
         // Refund
 
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
+        @JoinColumn(name = "reservation_id")
         private Reservation reservation;
 
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "booking_guest_id", insertable = false, updatable = false)
+        @JoinColumn(name = "booking_guest_id")
         private BookingGuest bookingGuest; 
 
         @OneToMany(mappedBy = "folio", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)

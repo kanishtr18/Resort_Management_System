@@ -30,6 +30,9 @@ public class RoomMapper {
                 room.getRoomType() != null ? room.getRoomType().getId() : null
         );
 
+        res.setRoomTypeName(
+        room.getRoomType() != null ? room.getRoomType().getName() : "Standard"
+);
         res.setAmenityIds(mapAmenities(room.getRoomAmenities()));
         res.setRoomBlockIds(mapRoomBlocks(room.getRoomBlocks()));
         res.setMaintenanceIds(mapMaintenance(room.getMaintenanceRequests()));

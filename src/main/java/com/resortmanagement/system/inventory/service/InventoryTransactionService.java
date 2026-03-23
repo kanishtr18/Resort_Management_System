@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.resortmanagement.system.inventory.entity.InventoryItem;
+import com.resortmanagement.system.inventory.entity.InventorySourceType;
 import com.resortmanagement.system.inventory.entity.InventoryTransaction;
 import com.resortmanagement.system.inventory.repository.InventoryItemRepository;
 import com.resortmanagement.system.inventory.repository.InventoryTransactionRepository;
@@ -65,26 +66,25 @@ public class InventoryTransactionService {
      * Add stock (Purchase Order / Adjustment)
      */
     @Transactional
-    public void addStock(
-            UUID itemId,
-            BigDecimal qtyAdded,
-            com.resortmanagement.system.inventory.entity.InventorySourceType sourceType,
-            UUID sourceId) {
+public void addStock(UUID itemId, BigDecimal qtyAdded, InventorySourceType sourceType, UUID sourceId) {
+    InventoryItem item = itemRepository.findById(itemId)
+            .orElseThrow(() -> new RuntimeException("Inventory item not found: " + itemId));
 
-        InventoryItem item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Inventory item not found: " + itemId));
+    // Check if current quantity is null before adding
+    BigDecimal currentQty = item.getQuantityOnHand() != null ? item.getQuantityOnHand() : BigDecimal.ZERO;
+    item.setQuantityOnHand(currentQty.add(qtyAdded));
+    
+    itemRepository.save(item);
 
-        item.setQuantityOnHand(item.getQuantityOnHand().add(qtyAdded));
-        itemRepository.save(item);
+    InventoryTransaction tx = new InventoryTransaction();
+    tx.setItem(item);
+    tx.setQtyChange(qtyAdded);
+    tx.setSourceType(sourceType);
+    tx.setSourceId(sourceId);
+    tx.setTransactionDate(java.time.LocalDateTime.now()); // Set date explicitly
 
-        InventoryTransaction tx = new InventoryTransaction();
-        tx.setItem(item);
-        tx.setQtyChange(qtyAdded);
-        tx.setSourceType(sourceType);
-        tx.setSourceId(sourceId);
-
-        transactionRepository.save(tx);
-    }
+    transactionRepository.save(tx);
+}
 
     public java.util.List<com.resortmanagement.system.inventory.dto.response.InventoryTransactionResponse> findAll() {
         return transactionRepository.findAll().stream()

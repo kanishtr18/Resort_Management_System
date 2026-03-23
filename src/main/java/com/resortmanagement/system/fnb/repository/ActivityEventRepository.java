@@ -4,6 +4,7 @@ import com.resortmanagement.system.fnb.entity.ActivityEvent;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,5 +14,7 @@ import com.resortmanagement.system.common.repository.SoftDeleteRepository;
 public interface ActivityEventRepository extends SoftDeleteRepository<ActivityEvent, UUID> {
 
     Optional<ActivityEvent> findAllById(Long id);
+
+    List<ActivityEvent> findByDeletedFalse();
 
 }

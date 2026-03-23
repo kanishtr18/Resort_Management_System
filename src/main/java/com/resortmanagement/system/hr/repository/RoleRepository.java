@@ -12,5 +12,7 @@ public interface RoleRepository extends SoftDeleteRepository<Role, UUID> {
 
     java.util.Optional<Role> findByName(String name);
 
+    java.util.Optional<Role> findByNameIgnoreCase(String name);
+
     org.springframework.data.domain.Page<Role> findByDeletedFalse(org.springframework.data.domain.Pageable pageable);
 }
